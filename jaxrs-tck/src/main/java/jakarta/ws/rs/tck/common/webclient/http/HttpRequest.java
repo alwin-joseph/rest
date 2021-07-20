@@ -91,7 +91,7 @@ public class HttpRequest {
   /**
    * Target web container host
    */
-  private String _host = null;
+  private String _host = "localhost";
 
   /**
    * Target web container port
@@ -350,7 +350,10 @@ public class HttpRequest {
     int defaultPort;
     ProtocolSocketFactory factory;
 
+    System.out.println("start executing request");
+
     if (_method.getFollowRedirects()) {
+      System.out.println("follow redirects is available");
       client = new HttpClient();
 
       if (_isSecure) {
@@ -364,58 +367,84 @@ public class HttpRequest {
       }
 
       Protocol protocol = new Protocol(method, factory, defaultPort);
+      System.out.println("host is :"+_host);
+      System.out.println("port is :"+_port);
       HttpConnection conn = new HttpConnection(_host, _port, protocol);
+      System.out.println("connection is :"+conn.toString());
 
       if (conn.isOpen()) {
+        System.out.println("connection is opened incorrectly");
         throw new IllegalStateException("Connection incorrectly opened");
       }
 
       conn.open();
+      System.out.println("connection is opened :"+conn.isOpen());
 
       //TestUtil.logMsg("[HttpRequest] Dispatching request: '" + _requestLine
       //    + "' to target server at '" + _host + ":" + _port + "'");
 
       addSupportHeaders();
       _headers = _method.getRequestHeaders();
+      System.out.println("headers length is "+_headers.length);
 
       //TestUtil.logTrace(
       //    "########## The real value set: " + _method.getFollowRedirects());
 
       client.getHostConfiguration().setHost(_host, _port, protocol);
-
+      System.out.println("host is "+_host.toString());
       client.executeMethod(_method);
+      System.out.println("client executed method ");
 
       return new HttpResponse(_host, _port, _isSecure, _method, getState());
     } else {
+      System.out.println("follow redirects is not available");
       if (_isSecure) {
+        System.out.println("https stuff");
         method = "https";
         defaultPort = DEFAULT_SSL_PORT;
         factory = new SSLProtocolSocketFactory();
+        System.out.println("SSLProtocolSocketFactory obj created");
       } else {
+        System.out.println("http stuff");
         method = "http";
         defaultPort = DEFAULT_HTTP_PORT;
         factory = new DefaultProtocolSocketFactory();
+        System.out.println("DefaultProtocolSocketFactory obj created: "+factory.toString());
       }
-
+      System.out.println("creating protocol obj now");
       Protocol protocol = new Protocol(method, factory, defaultPort);
-      HttpConnection conn = new HttpConnection(_host, _port, protocol);
+      System.out.println(" protocol obj created "+ protocol.toString());
+      
+      System.out.println("host is :");
+      System.out.println("host is :"+_host);
+      System.out.println("port is :"+_port);
+      HttpConnection conn = new HttpConnection("localhost", 8080, protocol);
+      System.out.println("connection is :"+conn.toString());
 
       if (conn.isOpen()) {
+        System.out.println("connection is opened incorrectly");
         throw new IllegalStateException("Connection incorrectly opened");
       }
 
+      
+
       conn.open();
+      System.out.println("connection is opened :"+conn.isOpen());
 
       //TestUtil.logMsg("[HttpRequest] Dispatching request: '" + _requestLine
       //    + "' to target server at '" + _host + ":" + _port + "'");
 
       addSupportHeaders();
       _headers = _method.getRequestHeaders();
+      System.out.println("headers is :"+_headers.toString());
 
       //TestUtil.logTrace(
       //    "########## The real value set: " + _method.getFollowRedirects());
 
+      System.out.println("method is executing:");
+      
       _method.execute(getState(), conn);
+      System.out.println("method executed ");
 
       return new HttpResponse(_host, _port, _isSecure, _method, getState());
     }
@@ -498,15 +527,18 @@ public class HttpRequest {
    */
   private void addSupportHeaders() {
 
+    System.out.println("_authType is : "+_authType);
     // Authentication headers
     // NOTE: Possibly move logic to generic method
     switch (_authType) {
     case NO_AUTHENTICATION:
       break;
     case BASIC_AUTHENTICATION:
+      System.out.println("case basic auth");
       setBasicAuthorizationHeader();
       break;
     case DIGEST_AUTHENTICATION:
+      System.out.println("case digest auth");
       throw new UnsupportedOperationException(
           "Digest Authentication is not currently " + "supported");
     }

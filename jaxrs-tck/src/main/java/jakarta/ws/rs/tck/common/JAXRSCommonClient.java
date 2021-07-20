@@ -26,6 +26,7 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
+import java.io.PrintStream;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpState;
@@ -41,7 +42,6 @@ import jakarta.ws.rs.tck.common.util.JaxrsUtil;
 import jakarta.ws.rs.tck.common.util.Data;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
 
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -226,17 +226,17 @@ public abstract class JAXRSCommonClient {
    *          a <code>String</code> value
    */
   public void setTestDir(String testDir) {
-    //TestUtil.logTrace("[JAXRSCommonClient] setTestDir");
+    TestUtil.logTrace("[JAXRSCommonClient] setTestDir");
     TESTDIR = testDir;
   }
 
   public void setContextRoot(String root) {
-    //TestUtil.logTrace("[JAXRSCommonClient] Contextroot set at " + root);
+    TestUtil.logTrace("[JAXRSCommonClient] Contextroot set at " + root);
     _contextRoot = root;
   }
 
   public String getContextRoot() {
-    //TestUtil.logTrace("[JAXRSCommonClient]getContextRoot");
+    TestUtil.logTrace("[JAXRSCommonClient]getContextRoot");
     return _contextRoot;
   }
 
@@ -251,7 +251,11 @@ public abstract class JAXRSCommonClient {
    *              if an error occurs
    */
   public void setup(String[] args, Properties p)   {
-    //TestUtil.logTrace("setup method JAXRSCommonClient");
+    TestUtil.logTrace("setup method JAXRSCommonClient");
+
+    System.out.println("inside setup method ");
+
+    System.out.println("SERVLETHOSTPROP is :"+SERVLETHOSTPROP);
 
     String hostname = p.getProperty(SERVLETHOSTPROP);
     String portnum = p.getProperty(SERVLETPORTPROP);
@@ -267,7 +271,7 @@ public abstract class JAXRSCommonClient {
         "[JAXRSCommonClient] 'tshome' was not set in the build.properties.");
     _tsHome = tshome.trim();
 
-    //TestUtil.logMsg("[JAXRSCommonClient] Test setup OK");
+    TestUtil.logMsg("[JAXRSCommonClient] Test setup OK");
   }
 
   /**
@@ -278,7 +282,7 @@ public abstract class JAXRSCommonClient {
    *              if an error occurs
    */
   public void cleanup()   {
-    //TestUtil.logMsg("[JAXRSCommonClient] Test cleanup OK");
+    TestUtil.logMsg("[JAXRSCommonClient] Test cleanup OK");
   }
 
   /*
@@ -296,26 +300,29 @@ public abstract class JAXRSCommonClient {
    *           If an error occurs during the test run
    */
   protected void invoke()   {
-    //TestUtil.logTrace("[JAXRSCommonClient] invoke");
+    TestUtil.logTrace("[JAXRSCommonClient] invoke");
+    System.out.println("invoked");
     try {
       _testCase = new WebTestCase();
       setTestProperties(_testCase);
-      //TestUtil.logTrace("[JAXRSCommonClient] EXECUTING");
+      TestUtil.logTrace("[JAXRSCommonClient] EXECUTING");
       if (_useSavedState && _state != null) {
         _testCase.getRequest().setState(_state);
       }
       if (_redirect != false) {
-        //TestUtil.logTrace("##########Call setFollowRedirects");
+        TestUtil.logTrace("##########Call setFollowRedirects");
         _testCase.getRequest().setFollowRedirects(_redirect);
       }
+      System.out.println("_testCase executing");
       _testCase.execute();
       if (_saveState) {
+        System.out.println("_saveState is true");
         _state = _testCase.getResponse().getState();
       }
     } catch (TestFailureException tfe) {
       Throwable t = tfe.getRootCause();
       if (t != null) {
-        //TestUtil.logErr("Root cause of Failure: " + t.getMessage(), t);
+        TestUtil.logErr("Root cause of Failure: " + t.getMessage(), t);
       }
       //throw new Fault("[JAXRSCommonClient] " + _testName
       //    + " failed!  Check output for cause of failure.", tfe);
@@ -334,7 +341,7 @@ public abstract class JAXRSCommonClient {
    * </PRE>
    */
   protected void setTestProperties(WebTestCase testCase) {
-    //TestUtil.logTrace("[JAXRSCommonClient] setTestProperties");
+    TestUtil.logTrace("[JAXRSCommonClient] setTestProperties");
 
     setStandardProperties(TEST_PROPS.get(Property.STANDARD), testCase);
     setApiTestProperties(TEST_PROPS.get(Property.APITEST), testCase);
@@ -404,7 +411,7 @@ public abstract class JAXRSCommonClient {
         testCase.addExpectedHeader(value);
         break;
       case FOLLOW_REDIRECT:
-        //TestUtil.logTrace("##########Found redirect Property");
+        TestUtil.logTrace("##########Found redirect Property");
         _redirect = true;
         break;
       case GOLDENFILE:
@@ -865,11 +872,11 @@ public abstract class JAXRSCommonClient {
   }
 
   public static void logMsg(Object... msg) {
-    //TestUtil.logMsg(objectsToString(msg));
+    TestUtil.logMsg(objectsToString(msg));
   }
 
   public static void logTrace(Object... msg) {
-    //TestUtil.logTrace(objectsToString(msg));
+    TestUtil.logTrace(objectsToString(msg));
   }
 
   /**
@@ -899,7 +906,7 @@ public abstract class JAXRSCommonClient {
    * ========================================================================
    */
   private String getTSRequest(String request) {
-    //TestUtil.logTrace("[JAXRSCommonClient] getTSRequest");
+    TestUtil.logTrace("[JAXRSCommonClient] getTSRequest");
     StringBuffer finReq = new StringBuffer(50);
     finReq.append(GET).append(_contextRoot).append(SL).append(_generalURI);
     finReq.append(SL).append(request).append(HTTP11);
@@ -931,7 +938,7 @@ public abstract class JAXRSCommonClient {
    *          - the current test case
    */
   private void setApiTestProperties(String testValue, WebTestCase testCase) {
-    //TestUtil.logTrace("[JAXRSCommonClient] setApiTestProperties");
+    TestUtil.logTrace("[JAXRSCommonClient] setApiTestProperties");
 
     if (testValue == null) {
       return;
@@ -980,7 +987,7 @@ public abstract class JAXRSCommonClient {
    *          - the current test case
    */
   private void setStandardProperties(String testValue, WebTestCase testCase) {
-    //TestUtil.logTrace("[JAXRSCommonClient] setStandardProperties");
+    TestUtil.logTrace("[JAXRSCommonClient] setStandardProperties");
 
     if (testValue == null) {
       return;

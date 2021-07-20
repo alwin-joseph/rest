@@ -1,0 +1,24 @@
+<arquillian>
+          <container qualifier="glassfish">
+            <configuration>
+                <property name="adminUser">admin</property>
+                <property name="adminPassword">changeit</property>
+                <property name="adminHttps">false</property>
+                <property name="adminHost">localhost</property>
+                <property name="adminPort">4848</property>
+                <property name="serverHttps">false</property>
+                <property name="porting.ts.url.class.1">jakarta.ws.rs.tck.lib.implementation.sun.common.SunRIURL</property>
+            </configuration>
+        </container>
+
+<container qualifier="arq-glassfish-managed">
+    <configuration>
+        <property name="allowConnectingToRunningServer">false</property>
+        <!--            <property name="glassFishHome">target/${glassfish.home}</property>-->
+        <property name="adminHost">localhost</property>
+        <property name="adminPort">4848</property>
+        <property name="enableDerby">${enableDerby:true}</property>
+        <property name="outputToConsole">true</property>
+    </configuration>
+</container>
+</arquillian>

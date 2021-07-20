@@ -34,6 +34,7 @@ import jakarta.ws.rs.tck.common.webclient.http.HttpRequest;
 import jakarta.ws.rs.tck.common.webclient.http.HttpResponse;
 import jakarta.ws.rs.tck.common.webclient.validation.ValidationFactory;
 import jakarta.ws.rs.tck.common.webclient.validation.ValidationStrategy;
+import jakarta.ws.rs.tck.common.webclient.TestFailureException;
 
 /**
  * A TestCase implementation for HTTP-based testing. This allows the user to set
@@ -154,19 +155,25 @@ public class WebTestCase implements TestCase {
    */
   public void execute() throws TestFailureException {
 
+    System.out.println("execute started");
     // If no request was created, we can't run.
     if (_request == null) {
+      System.out.println("_request is null");
       throw new IllegalStateException("[FATAL] HttpRequest is null.");
+
     }
 
     // If no stragey instance is available (strange, but has happened),
     // fail.
     if (_strategy == null) {
+      System.out.println("strategy is null");
       throw new IllegalStateException("[FATAL] No Validator available.");
     }
 
     try {
+      System.out.println("_request is "+_request.toString());
       _response = _request.execute();
+      System.out.println("response is "+_response.toString());
     } catch (Throwable t) {
       String message = t.getMessage();
       throw new TestFailureException("[FATAL] Unexpected failure during "

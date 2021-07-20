@@ -32,7 +32,7 @@ import jakarta.ws.rs.tck.api.rs.core.responseclient.VerificationResult;
 import jakarta.ws.rs.tck.common.impl.SinglevaluedMap;
 import jakarta.ws.rs.tck.common.util.JaxrsUtil;
 
-import static org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -50,7 +50,7 @@ import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Variant;
 import jakarta.ws.rs.ext.RuntimeDelegate;
 
-public class BuilderClient
+public class BuilderClientIT
     extends jakarta.ws.rs.tck.api.rs.core.responseclient.JAXRSClient {
 
   //private static final long serialVersionUID = -6510800230328526760L;

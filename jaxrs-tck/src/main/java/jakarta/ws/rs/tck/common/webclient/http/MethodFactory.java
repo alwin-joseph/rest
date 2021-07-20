@@ -101,6 +101,7 @@ public class MethodFactory {
    * @return HttpMethod based in request.
    */
   public static HttpMethod getInstance(String request) {
+    System.out.println("get instance for req"+request);
     StringTokenizer st = new StringTokenizer(request);
     String method;
     String query = null;
