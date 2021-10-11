@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.patch.server;
+package jakarta.ws.rs.tck.jaxrs21.ee.patch.server;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class TSAppConfig extends Application {
 
   public java.util.Set<java.lang.Class<?>> getClasses() {
     Set<Class<?>> resources = new HashSet<Class<?>>();
-    resources.add(com.sun.ts.tests.jaxrs.jaxrs21.ee.patch.Resource.class);
+    resources.add(jakarta.ws.rs.tck.jaxrs21.ee.patch.Resource.class);
     return resources;
   }
 }

@@ -14,10 +14,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.sseeventsource;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse.sseeventsource;
 
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.OutboundSSEEventImpl;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEMessage;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.OutboundSSEEventImpl;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEMessage;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;

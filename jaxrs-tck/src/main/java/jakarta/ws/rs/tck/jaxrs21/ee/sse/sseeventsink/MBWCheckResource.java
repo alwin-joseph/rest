@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.sseeventsink;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse.sseeventsink;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -25,11 +25,11 @@ import java.nio.file.StandardOpenOption;
 
 import javax.xml.namespace.QName;
 
-import com.sun.ts.tests.jaxrs.common.impl.SinglevaluedMap;
-import com.sun.ts.tests.jaxrs.common.impl.StringDataSource;
-import com.sun.ts.tests.jaxrs.common.impl.StringSource;
-import com.sun.ts.tests.jaxrs.common.impl.StringStreamingOutput;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEMessage;
+import jakarta.ws.rs.tck.common.impl.SinglevaluedMap;
+import jakarta.ws.rs.tck.common.impl.StringDataSource;
+import jakarta.ws.rs.tck.common.impl.StringSource;
+import jakarta.ws.rs.tck.common.impl.StringStreamingOutput;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEMessage;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

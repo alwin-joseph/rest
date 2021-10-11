@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse;
 
 import java.util.function.BiConsumer;
 
@@ -23,13 +23,13 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.sse.InboundSseEvent;
 import jakarta.ws.rs.sse.SseEventSource;
 
-import com.sun.ts.tests.jaxrs.common.client.JaxrsCommonClient;
-import com.sun.ts.tests.jaxrs.common.util.Holder;
+import jakarta.ws.rs.tck.common.client.JaxrsCommonClient;
+import jakarta.ws.rs.tck.common.util.Holder;
 
 /**
  * @since 2.1
  */
-public abstract class SSEJAXRSClientIT extends JaxrsCommonClient {
+public abstract class SSEJAXRSClient extends JaxrsCommonClient {
 
   private static final long serialVersionUID = 21L;
 

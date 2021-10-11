@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.sseeventsource;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse.sseeventsource;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,8 @@ import java.io.Reader;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiPredicate;
+
+import jakarta.ws.rs.tck.lib.util.TestUtil;
 
 import jakarta.activation.DataSource;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -36,45 +38,72 @@ import jakarta.xml.bind.JAXBElement;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import com.sun.ts.tests.jaxrs.common.impl.JaxbKeyValueBean;
-import com.sun.ts.tests.jaxrs.common.util.Holder;
-import com.sun.ts.tests.jaxrs.common.util.JaxrsUtil;
-import com.sun.ts.tests.jaxrs.common.util.LinkedHolder;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEJAXRSClient;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEMessage;
+import jakarta.ws.rs.tck.common.impl.JaxbKeyValueBean;
+import jakarta.ws.rs.tck.common.util.Holder;
+import jakarta.ws.rs.tck.common.util.JaxrsUtil;
+import jakarta.ws.rs.tck.common.util.LinkedHolder;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEJAXRSClient;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEMessage;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
 /**
  * @since 2.1
  */
-public class JAXRSClientIT extends SSEJAXRSClientIT {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends SSEJAXRSClient {
 
   private static final long serialVersionUID = 21L;
 
   private int mediaTestLevel = 0;
 
   public JAXRSClientIT() {
+    setup();
+    mediaTestLevel = 0;
     setContextRoot("/jaxrs_jaxrs21_ee_sse_sseeventsource_web");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClientIT().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
 
-  @Override
-  public void setup(String[] args, Properties p) throws Fault {
-    super.setup(args, p);
-    mediaTestLevel = 0;
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
   }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/jaxrs21/ee/sse/sseeventsource/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_sse_sseeventsource_web.war");
+    archive.addClasses(TSAppConfig.class, MediaTypeResource.class,
+      RepeatedCasterResource.class, ServiceUnavailableResource.class);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
 
   /* Run test */
   /*

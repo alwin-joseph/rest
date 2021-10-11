@@ -14,29 +14,46 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.sseeventsink;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse.sseeventsink;
 
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.sse.InboundSseEvent;
 import jakarta.ws.rs.sse.SseEventSource;
+import java.io.InputStream;
+import java.io.IOException;
 
-import com.sun.ts.lib.util.TestUtil;
-import com.sun.ts.tests.jaxrs.common.util.Holder;
-import com.sun.ts.tests.jaxrs.common.util.LinkedHolder;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEJAXRSClient;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.SSEMessage;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+import jakarta.ws.rs.tck.common.util.Holder;
+import jakarta.ws.rs.tck.common.util.LinkedHolder;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEJAXRSClient;
+import jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEMessage;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
 /**
  * @since 2.1
  */
-public class JAXRSClientIT extends SSEJAXRSClientIT {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends SSEJAXRSClient {
 
   private static final long serialVersionUID = 21L;
 
@@ -49,17 +66,33 @@ public class JAXRSClientIT extends SSEJAXRSClientIT {
   protected int sleep = -1;
 
   public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_jaxrs21_ee_sse_sseeventsink_web");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClientIT().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/jaxrs21/ee/sse/sseeventsink/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_sse_sseeventsink_web.war");
+    archive.addClasses(TSAppConfig.class, CloseResource.class, MBWCheckResource.class, StageCheckerResource.class);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
 
   /* Run test */
   ///////////////////////////////////////////////////////////////////////////////////////////

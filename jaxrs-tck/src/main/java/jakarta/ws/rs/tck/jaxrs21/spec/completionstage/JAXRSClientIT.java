@@ -14,31 +14,67 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.spec.completionstage;
+package jakarta.ws.rs.tck.jaxrs21.spec.completionstage;
 
 import java.util.concurrent.Future;
+import java.io.InputStream;
+import java.io.IOException;
 
-import com.sun.ts.tests.jaxrs.common.client.JaxrsCommonClient;
-import com.sun.ts.tests.jaxrs.common.client.JdkLoggingFilter;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import jakarta.ws.rs.tck.common.client.JaxrsCommonClient;
+import jakarta.ws.rs.tck.common.client.JdkLoggingFilter;
 
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.Response;
 
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
+@ExtendWith(ArquillianExtension.class)
 public class JAXRSClientIT extends JaxrsCommonClient {
 
   private static final long serialVersionUID = 21L;
 
   public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_jaxrs21_spec_completionstage_web");
   }
 
-  public static void main(String[] args) {
-    new JAXRSClientIT().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
+  }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_spec_completionstage_web.war");
+    archive.addClasses(TSAppConfig.class, CompletionStageResource.class);
+    return archive;
+
   }
 
   /* Run test */

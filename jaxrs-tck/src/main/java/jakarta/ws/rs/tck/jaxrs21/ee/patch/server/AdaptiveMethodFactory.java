@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.patch.server;
+package jakarta.ws.rs.tck.jaxrs21.ee.patch.server;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 
-import com.sun.ts.lib.porting.TSURL;
+import jakarta.ws.rs.tck.lib.porting.TSURL;
 
 /**
  * Simple factory class which returns HttpMethod implementations based on a

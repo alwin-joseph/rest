@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.priority;
+package jakarta.ws.rs.tck.jaxrs21.ee.priority;
 
 public class TckPriorityException extends RuntimeException {
   private static final long serialVersionUID = 21L;

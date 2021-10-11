@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.sse.ssebroadcaster;
+package jakarta.ws.rs.tck.jaxrs21.ee.sse.ssebroadcaster;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,7 +31,7 @@ import jakarta.ws.rs.sse.Sse;
 import jakarta.ws.rs.sse.SseBroadcaster;
 import jakarta.ws.rs.sse.SseEventSink;
 
-import com.sun.ts.tests.jaxrs.common.util.Holder;
+import jakarta.ws.rs.tck.common.util.Holder;
 
 @Path("broadcast")
 public class BroadcastResource {

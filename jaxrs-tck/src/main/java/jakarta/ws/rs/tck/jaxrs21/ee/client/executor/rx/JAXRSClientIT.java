@@ -14,19 +14,37 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.client.executor.rx;
+package jakarta.ws.rs.tck.jaxrs21.ee.client.executor.rx;
 
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.Future;
+import java.io.InputStream;
 
-import com.sun.ts.tests.jaxrs.common.client.JdkLoggingFilter;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.client.executor.ExecutorServiceChecker;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import jakarta.ws.rs.tck.common.client.JdkLoggingFilter;
+import jakarta.ws.rs.tck.jaxrs21.ee.client.executor.ExecutorServiceChecker;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 /*
  * @class.setup_props: webServerHost;
@@ -36,34 +54,36 @@ import jakarta.ws.rs.core.Response;
 /**
  * @since 2.1
  */
-public class JAXRSClient
-    extends com.sun.ts.tests.jaxrs.jaxrs21.ee.client.rxinvoker.JAXRSClient
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT
+    extends jakarta.ws.rs.tck.jaxrs21.ee.client.rxinvoker.JAXRSClientIT
     implements ExecutorServiceChecker {
 
   private static final long serialVersionUID = 21L;
 
   public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_jaxrs21_ee_client_executor_rx_web/resource");
   }
 
-  @Override
-  public void setup(String[] args, Properties p) throws Fault {
-    super.setup(args, p);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    JAXRSClientIT c = new JAXRSClientIT();
-    c.run(args);
-    try {
-      c.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_client_executor_rx_web.war");
+    archive.addClasses(TSAppConfig.class, jakarta.ws.rs.tck.common.impl.TRACE.class,
+      jakarta.ws.rs.tck.jaxrs21.ee.client.rxinvoker.Resource.class);
+    return archive;
+
   }
 
   /* Run test */

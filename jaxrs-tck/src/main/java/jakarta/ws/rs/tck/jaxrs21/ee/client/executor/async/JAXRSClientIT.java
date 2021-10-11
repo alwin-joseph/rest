@@ -14,26 +14,44 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.client.executor.async;
+package jakarta.ws.rs.tck.jaxrs21.ee.client.executor.async;
 
 import java.io.IOException;
 import java.util.concurrent.Future;
+import java.io.InputStream;
 
-import com.sun.ts.tests.jaxrs.common.client.JdkLoggingFilter;
-import com.sun.ts.tests.jaxrs.jaxrs21.ee.client.executor.ExecutorServiceChecker;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import jakarta.ws.rs.tck.common.client.JdkLoggingFilter;
+import jakarta.ws.rs.tck.jaxrs21.ee.client.executor.ExecutorServiceChecker;
 
 import jakarta.ws.rs.client.AsyncInvoker;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
 
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
-public class JAXRSClient
-    extends com.sun.ts.tests.jaxrs.ee.rs.client.asyncinvoker.JAXRSClient
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT
+    extends jakarta.ws.rs.tck.ee.rs.client.asyncinvoker.JAXRSClientIT
     implements ExecutorServiceChecker {
 
   private static final long serialVersionUID = 21L;
@@ -42,15 +60,26 @@ public class JAXRSClient
     setContextRoot("/jaxrs_jaxrs21_ee_client_executor_async_web/resource");
   }
 
-  public static void main(String[] args) {
-    JAXRSClientIT client = new JAXRSClientIT();
-    client.run(args);
-    try {
-      client.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_client_executor_async_web.war");
+    archive.addClasses(TSAppConfig.class, jakarta.ws.rs.tck.common.impl.TRACE.class,
+      jakarta.ws.rs.tck.ee.rs.client.asyncinvoker.Resource.class);
+    return archive;
+
+  }
+
 
   /* Run test */
   // --------------------------------------------------------------------

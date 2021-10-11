@@ -18,7 +18,7 @@
  * $Id$
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.patch.server;
+package jakarta.ws.rs.tck.jaxrs21.ee.patch.server;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -40,10 +40,10 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 
-import com.sun.ts.lib.util.TestUtil;
-import com.sun.ts.tests.common.webclient.Util;
-import com.sun.ts.tests.common.webclient.http.HttpRequest;
-import com.sun.ts.tests.common.webclient.http.HttpResponse;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+import jakarta.ws.rs.tck.common.webclient.Util;
+import jakarta.ws.rs.tck.common.webclient.http.HttpRequest;
+import jakarta.ws.rs.tck.common.webclient.http.HttpResponse;
 
 /**
  * Represents an HTTP client Request

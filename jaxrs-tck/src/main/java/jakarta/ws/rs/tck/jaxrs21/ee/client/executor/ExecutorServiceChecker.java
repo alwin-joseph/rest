@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.ts.tests.jaxrs.jaxrs21.ee.client.executor;
+package jakarta.ws.rs.tck.jaxrs21.ee.client.executor;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import jakarta.ws.rs.client.ClientRequestContext;
 import jakarta.ws.rs.client.ClientRequestFilter;
 import jakarta.ws.rs.core.Response;
 
-import com.sun.ts.tests.jaxrs.ee.rs.core.request.JAXRSClient;
+import jakarta.ws.rs.tck.ee.rs.core.request.JAXRSClient;
 
 public interface ExecutorServiceChecker extends Closeable {
   final static String THREADPREFIX = "JAXRS_TCK_THREAD";
