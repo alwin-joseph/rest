@@ -69,12 +69,13 @@ public class JAXRSClientIT extends SSEJAXRSClient {
   }
 
   @Override
-  public void setup(String[] args, Properties p) throws Fault {
-    super.setup(args, p);
+  public void setup() {
+    super.setup();
     target = ClientBuilder.newClient()
         .target(getAbsoluteUrl("broadcast/register"));
     clients = new BroadCasterClient[CLIENTS];
   }
+
 
   @BeforeEach
   void logStartTest(TestInfo testInfo) {
@@ -93,7 +94,17 @@ public class JAXRSClientIT extends SSEJAXRSClient {
     String webXml = editWebXmlString(inStream);
 
     WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_sse_ssebroadcaster_web.war");
-    archive.addClasses(TSAppConfig.class, Resource.class);
+    archive.addClasses(TSAppConfig.class, BroadcastResource.class,
+        jakarta.ws.rs.tck.common.util.Holder.class,
+        jakarta.ws.rs.tck.jaxrs21.ee.sse.SSEMessage.class,
+        jakarta.ws.rs.tck.common.impl.TRACE.class,
+        jakarta.ws.rs.tck.common.impl.StringSource.class,
+        jakarta.ws.rs.tck.common.impl.StringStreamingOutput.class,
+        jakarta.ws.rs.tck.common.impl.StringDataSource.class,
+        jakarta.ws.rs.tck.common.impl.SinglevaluedMap.class,
+        jakarta.ws.rs.tck.common.impl.SecurityContextImpl.class,
+        jakarta.ws.rs.tck.common.impl.ReplacingOutputStream.class,
+        jakarta.ws.rs.tck.common.impl.JaxbKeyValueBean.class);
     archive.setWebXML(new StringAsset(webXml));
     return archive;
 
@@ -127,6 +138,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void sseBroadcastTest() throws Fault {
     int MSG_MAX = 7;
     int wait = 25;
@@ -177,7 +189,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
       assertEquals(events.size(), MSG_MAX + 1,
           "Received unexpected number of events", events.size());
       assertTrue(events.get(0).contains("WELCOME"),
-          "Received unexpected message", events.get(0));
+          "Received unexpected message"+ events.get(0));
       for (int j = 0; j != MSG_MAX; j++)
         assertEquals(events.get(j + 1), SSEMessage.MESSAGE + j,
             "Received unexpected message", events.get(j + 1));

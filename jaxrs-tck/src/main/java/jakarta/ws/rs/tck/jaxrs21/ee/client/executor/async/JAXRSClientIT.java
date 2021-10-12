@@ -57,6 +57,7 @@ public class JAXRSClientIT
   private static final long serialVersionUID = 21L;
 
   public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_jaxrs21_ee_client_executor_async_web/resource");
   }
 
@@ -70,7 +71,7 @@ public class JAXRSClientIT
     TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
   }
 
-  @Deployment(testable = false)
+  @Deployment(testable = false, name = "jaxrs21_ee_client_executor_async_deployment")
   public static WebArchive createDeployment() throws IOException{
 
     WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_client_executor_async_web.war");
@@ -93,8 +94,19 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<Response> deleteTest() throws Fault {
-    return super.deleteTest();
+  @Test
+  public void deleteTest() throws Fault {
+    super.deleteTest();
+  }
+
+  @Override
+  public void deleteWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteThrowsExceptionTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -105,9 +117,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<String> deleteWithStringClassWhileServerWaitTest()
+  @Test
+  public void deleteWithStringClassWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithStringClassWhileServerWaitTest();
+    super.deleteWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -118,9 +131,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<Response> deleteWithResponseClassWhileServerWaitTest()
+  @Test
+  public void deleteWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithResponseClassWhileServerWaitTest();
+    super.deleteWithResponseClassWhileServerWaitTest();
+  }
+
+  @Override
+  public void deleteWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -131,9 +160,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<String> deleteWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void deleteWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithGenericTypeStringWhileServerWaitTest();
+    super.deleteWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -144,9 +174,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<Response> deleteWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void deleteWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithGenericTypeResponseWhileServerWaitTest();
+    super.deleteWithGenericTypeResponseWhileServerWaitTest();
+  }
+
+  @Override
+  public void deleteWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -157,8 +203,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<Response> deleteWithCallbackWhileServerWaitTest() throws Fault {
-    return super.deleteWithCallbackWhileServerWaitTest();
+  @Test
+  public void deleteWithCallbackWhileServerWaitTest() throws Fault {
+    super.deleteWithCallbackWhileServerWaitTest();
   }
 
   /*
@@ -169,9 +216,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * asynchronously.
    */
-  public Future<String> deleteWithCallbackStringWhileServerWaitTest()
+  @Test
+  public void deleteWithCallbackStringWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithCallbackStringWhileServerWaitTest();
+    super.deleteWithCallbackStringWhileServerWaitTest();
+  }
+
+  @Override
+  public void deleteWithCallbackStringThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void deleteWithCallbackStringThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void deleteWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   // ------------------------------------------------------------------
@@ -185,8 +248,19 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<Response> getTest() throws Fault {
-    return super.getTest();
+  @Test
+  public void getTest() throws Fault {
+    super.getTest();
+  }
+  
+  @Override
+  public void getWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -197,8 +271,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<String> getWithStringClassWhileServerWaitTest() throws Fault {
-    return super.getWithStringClassWhileServerWaitTest();
+  @Test
+  public void getWithStringClassWhileServerWaitTest() throws Fault {
+    super.getWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -209,10 +284,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<Response> getWithResponseClassWhileServerWaitTest()
+  @Test
+  public void getWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.deleteWithResponseClassWhileServerWaitTest();
+    super.deleteWithResponseClassWhileServerWaitTest();
   }
+
+  @Override
+  public void getWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: getWithGenericTypeStringWhileServerWaitTest
@@ -222,9 +314,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<String> getWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void getWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.getWithGenericTypeStringWhileServerWaitTest();
+    super.getWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -235,9 +328,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<Response> getWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void getWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.getWithGenericTypeResponseWhileServerWaitTest();
+    super.getWithGenericTypeResponseWhileServerWaitTest();
+  }
+
+  @Override
+  public void getWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -248,8 +357,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<Response> getWithCallbackWhileServerWaitTest() throws Fault {
-    return super.getWithCallbackWhileServerWaitTest();
+  @Test
+  public void getWithCallbackWhileServerWaitTest() throws Fault {
+    super.getWithCallbackWhileServerWaitTest();
   }
 
   /*
@@ -260,10 +370,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP GET method for the current request
    * asynchronously.
    */
-  public Future<String> getWithCallbackStringWhileServerWaitTest()
+  @Test
+  public void getWithCallbackStringWhileServerWaitTest()
       throws Fault {
-    return super.getWithCallbackStringWhileServerWaitTest();
+    super.getWithCallbackStringWhileServerWaitTest();
   }
+
+  @Override
+  public void getWithCallbackStringThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithCallbackStringThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void getWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   // ------------------------------------------------------------------
   // ---------------------------HEAD-----------------------------------
@@ -277,8 +404,19 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP HEAD method for the current request
    * asynchronously.
    */
-  public Future<Response> headTest() throws Fault {
-    return super.headTest();
+  @Test
+  public void headTest() throws Fault {
+    super.headTest();
+  }
+  
+  @Override
+  public void headWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void headThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -289,8 +427,14 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP HEAD method for the current request
    * asynchronously.
    */
-  public Future<Response> headWithCallbackWhileServerWaitTest() throws Fault {
-    return super.headWithCallbackWhileServerWaitTest();
+  @Test
+  public void headWithCallbackWhileServerWaitTest() throws Fault {
+    super.headWithCallbackWhileServerWaitTest();
+  }
+
+  @Override
+  public void headWithCallbackStringThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
   }
 
   // ------------------------------------------------------------------
@@ -305,8 +449,19 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodTest() throws Fault {
-    return super.methodTest();
+  @Test
+  public void methodTest() throws Fault {
+    super.methodTest();
+  }
+
+  @Override
+  public void methodWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -317,9 +472,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithStringClassWhileServerWaitTest()
+  @Test
+  public void methodWithStringClassWhileServerWaitTest()
       throws Fault {
-    return super.methodWithStringClassWhileServerWaitTest();
+    super.methodWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -330,9 +486,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithResponseClassWhileServerWaitTest()
+  @Test
+  public void methodWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.methodWithResponseClassWhileServerWaitTest();
+    super.methodWithResponseClassWhileServerWaitTest();
+  }
+  
+  @Override
+  public void methodWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void methodWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -343,9 +515,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void methodWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.methodWithGenericTypeStringWhileServerWaitTest();
+    super.methodWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -356,10 +529,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void methodWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.methodWithGenericTypeResponseWhileServerWaitTest();
+    super.methodWithGenericTypeResponseWhileServerWaitTest();
   }
+
+  @Override
+  public void methodWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: methodWithCallbackWhileServerWaitTest
@@ -369,8 +559,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithCallbackWhileServerWaitTest() throws Fault {
-    return super.methodWithCallbackWhileServerWaitTest();
+  @Test
+  public void methodWithCallbackWhileServerWaitTest() throws Fault {
+    super.methodWithCallbackWhileServerWaitTest();
   }
 
   /*
@@ -381,10 +572,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithCallbackStringWhileServerWaitTest()
+  @Test
+  public void methodWithCallbackStringWhileServerWaitTest()
       throws Fault {
-    return super.methodWithCallbackStringWhileServerWaitTest();
+    super.methodWithCallbackStringWhileServerWaitTest();
   }
+
+  @Override
+  public void methodWithCallbackThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithCallbackThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: methodWithEntityWhileServerWaitTest
@@ -394,9 +602,16 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithEntityWhileServerWaitTest() throws Fault {
-    return super.methodWithEntityWhileServerWaitTest();
+  @Test
+  public void methodWithEntityWhileServerWaitTest() throws Fault {
+    super.methodWithEntityWhileServerWaitTest();
   }
+
+  @Override
+  public void methodWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: methodWithStringClassWithEntityWhileServerWaitTest
@@ -406,9 +621,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithStringClassWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithStringClassWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithStringClassWithEntityWhileServerWaitTest();
+    super.methodWithStringClassWithEntityWhileServerWaitTest();
   }
 
   /*
@@ -419,9 +635,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithResponseClassWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithResponseClassWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithResponseClassWithEntityWhileServerWaitTest();
+    super.methodWithResponseClassWithEntityWhileServerWaitTest();
   }
 
   /*
@@ -432,11 +649,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithGenericTypeStringWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithGenericTypeStringWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithGenericTypeStringWithEntityWhileServerWaitTest();
+    super.methodWithGenericTypeStringWithEntityWhileServerWaitTest();
   }
 
+  @Override
+  public void methodWithClassWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithClassWithEntityThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithClassWithEntityThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
   /*
    * @testName: methodWithGenericTypeResponseWithEntityWhileServerWaitTest
    * 
@@ -445,9 +678,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithGenericTypeResponseWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithGenericTypeResponseWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithGenericTypeResponseWithEntityWhileServerWaitTest();
+    super.methodWithGenericTypeResponseWithEntityWhileServerWaitTest();
+  }
+
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -458,9 +707,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<Response> methodWithCallbackWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithCallbackWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithCallbackWithEntityWhileServerWaitTest();
+    super.methodWithCallbackWithEntityWhileServerWaitTest();
   }
 
   /*
@@ -471,10 +721,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke an arbitrary method for the current request
    * asynchronously.
    */
-  public Future<String> methodWithCallbackStringWithEntityWhileServerWaitTest()
+  @Test
+  public void methodWithCallbackStringWithEntityWhileServerWaitTest()
       throws Fault {
-    return super.methodWithCallbackStringWithEntityWhileServerWaitTest();
+    super.methodWithCallbackStringWithEntityWhileServerWaitTest();
   }
+
+  @Override
+  public void methodWithCallbackWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithCallbackWithEntityThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithCallbackWithEntityThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   // ------------------------------------------------------------------
   // ---------------------------OPTIONS--------------------------------
@@ -488,9 +755,21 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<Response> optionsTest() throws Fault {
-    return super.optionsTest();
+  @Test
+  public void optionsTest() throws Fault {
+    super.optionsTest();
   }
+
+  @Override
+  public void optionsWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: optionsWithStringClassWhileServerWaitTest
@@ -500,9 +779,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<String> optionsWithStringClassWhileServerWaitTest()
+  @Test
+  public void optionsWithStringClassWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithStringClassWhileServerWaitTest();
+    super.optionsWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -513,11 +793,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<Response> optionsWithResponseClassWhileServerWaitTest()
+  @Test
+  public void optionsWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithResponseClassWhileServerWaitTest();
+    super.optionsWithResponseClassWhileServerWaitTest();
   }
 
+  @Override
+  public void optionsWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
   /*
    * @testName: optionsWithGenericTypeStringWhileServerWaitTest
    * 
@@ -526,9 +822,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<String> optionsWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void optionsWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithGenericTypeStringWhileServerWaitTest();
+    super.optionsWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -539,9 +836,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<Response> optionsWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void optionsWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithGenericTypeResponseWhileServerWaitTest();
+    super.optionsWithGenericTypeResponseWhileServerWaitTest();
+  }
+
+  @Override
+  public void optionsWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void optionsWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void optionsWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -552,9 +865,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<Response> optionsWithCallbackWhileServerWaitTest()
+  @Test
+  public void optionsWithCallbackWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithCallbackWhileServerWaitTest();
+    super.optionsWithCallbackWhileServerWaitTest();
   }
 
   /*
@@ -565,9 +879,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP options method for the current request
    * asynchronously.
    */
-  public Future<String> optionsWithStringCallbackWhileServerWaitTest()
+  @Test
+  public void optionsWithStringCallbackWhileServerWaitTest()
       throws Fault {
-    return super.optionsWithStringCallbackWhileServerWaitTest();
+    super.optionsWithStringCallbackWhileServerWaitTest();
+  }
+
+  @Override
+  public void optionsWithCallbackThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsWithCallbackThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   // ------------------------------------------------------------------
@@ -582,8 +912,19 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<Response> postTest() throws Fault {
-    return super.postTest();
+  @Test
+  public void postTest() throws Fault {
+    super.postTest();
+  }
+
+  @Override
+  public void postWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -594,8 +935,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<String> postWithStringClassWhileServerWaitTest() throws Fault {
-    return super.postWithStringClassWhileServerWaitTest();
+  @Test
+  public void postWithStringClassWhileServerWaitTest() throws Fault {
+    super.postWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -606,9 +948,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<Response> postWithResponseClassWhileServerWaitTest()
+  @Test
+  public void postWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.postWithResponseClassWhileServerWaitTest();
+    super.postWithResponseClassWhileServerWaitTest();
+  }
+
+  @Override
+  public void postWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void postWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -619,9 +977,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<String> postWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void postWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.postWithGenericTypeStringWhileServerWaitTest();
+    super.postWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -632,9 +991,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<Response> postWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void postWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.postWithGenericTypeResponseWhileServerWaitTest();
+    super.postWithGenericTypeResponseWhileServerWaitTest();
+  }
+  
+  @Override
+  public void postWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -645,9 +1020,26 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP post method for the current request
    * asynchronously.
    */
-  public Future<Response> postWithCallbackWhileServerWaitTest() throws Fault {
-    return super.postWithCallbackWhileServerWaitTest();
+  @Test
+  public void postWithCallbackWhileServerWaitTest() throws Fault {
+    super.postWithCallbackWhileServerWaitTest();
   }
+
+  @Override
+  public void postWithCallbackThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postWithCallbackThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void postWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   // ------------------------------------------------------------------
   // ---------------------------PUT -----------------------------------
@@ -661,8 +1053,34 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP PUT method for the current request
    * asynchronously.
    */
-  public Future<Response> putTest() throws Fault {
-    return super.putTest();
+  @Test
+  public void putTest() throws Fault {
+    super.putTest();
+  }
+
+  @Override
+  public void putWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   /*
@@ -673,9 +1091,26 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<String> putWithStringClassWhileServerWaitTest() throws Fault {
-    return super.putWithStringClassWhileServerWaitTest();
+  @Test
+  public void putWithStringClassWhileServerWaitTest() throws Fault {
+    super.putWithStringClassWhileServerWaitTest();
   }
+
+  @Override
+  public void putWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: putWithResponseClassWhileServerWaitTest
@@ -685,9 +1120,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<Response> putWithResponseClassWhileServerWaitTest()
+  @Test
+  public void putWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.putWithResponseClassWhileServerWaitTest();
+    super.putWithResponseClassWhileServerWaitTest();
   }
 
   /*
@@ -698,9 +1134,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<String> putWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void putWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.putWithGenericTypeStringWhileServerWaitTest();
+    super.putWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -711,9 +1148,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<Response> putWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void putWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.putWithGenericTypeResponseWhileServerWaitTest();
+    super.putWithGenericTypeResponseWhileServerWaitTest();
   }
 
   /*
@@ -724,8 +1162,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<Response> putWithCallbackWhileServerWaitTest() throws Fault {
-    return super.putWithCallbackWhileServerWaitTest();
+  @Test
+  public void putWithCallbackWhileServerWaitTest() throws Fault {
+    super.putWithCallbackWhileServerWaitTest();
   }
 
   /*
@@ -736,9 +1175,25 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP put method for the current request
    * asynchronously.
    */
-  public Future<String> putWithStringCallbackWhileServerWaitTest()
+  @Test
+  public void putWithStringCallbackWhileServerWaitTest()
       throws Fault {
-    return super.putWithStringCallbackWhileServerWaitTest();
+    super.putWithStringCallbackWhileServerWaitTest();
+  }
+
+  @Override
+  public void putWithCallbackThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void putWithCallbackThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  @Override
+  public void putWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
   }
 
   // ------------------------------------------------------------------
@@ -753,10 +1208,22 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<Response> traceTest() throws Fault {
-    return super.traceTest();
+  @Test
+  public void traceTest() throws Fault {
+    super.traceTest();
   }
 
+  @Override
+  public void traceWhileServerWaitTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  
+  
   /*
    * @testName: traceWithStringClassWhileServerWaitTest
    * 
@@ -765,8 +1232,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<String> traceWithStringClassWhileServerWaitTest() throws Fault {
-    return super.traceWithStringClassWhileServerWaitTest();
+  @Test
+  public void traceWithStringClassWhileServerWaitTest() throws Fault {
+    super.traceWithStringClassWhileServerWaitTest();
   }
 
   /*
@@ -777,10 +1245,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<Response> traceWithResponseClassWhileServerWaitTest()
+  @Test
+  public void traceWithResponseClassWhileServerWaitTest()
       throws Fault {
-    return super.traceWithResponseClassWhileServerWaitTest();
+    super.traceWithResponseClassWhileServerWaitTest();
   }
+
+  @Override
+  public void traceWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: traceWithGenericTypeStringWhileServerWaitTest
@@ -790,9 +1275,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<String> traceWithGenericTypeStringWhileServerWaitTest()
+  @Test
+  public void traceWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
-    return super.traceWithGenericTypeStringWhileServerWaitTest();
+    super.traceWithGenericTypeStringWhileServerWaitTest();
   }
 
   /*
@@ -803,10 +1289,27 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<Response> traceWithGenericTypeResponseWhileServerWaitTest()
+  @Test
+  public void traceWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
-    return super.traceWithGenericTypeResponseWhileServerWaitTest();
+    super.traceWithGenericTypeResponseWhileServerWaitTest();
   }
+
+  @Override
+  public void traceWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   /*
    * @testName: traceWithCallbackWhileServerWaitTest
@@ -816,10 +1319,28 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<Response> traceWithCallbackWhileServerWaitTest() throws Fault {
-    return super.traceWithCallbackWhileServerWaitTest();
+  @Test
+  public void traceWithCallbackWhileServerWaitTest() throws Fault {
+    super.traceWithCallbackWhileServerWaitTest();
   }
 
+  @Override
+  public void traceWithCallbackThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithCallbackThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void traceWithCallbackThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
+  
+  
   /*
    * @testName: traceWithStringCallbackWhileServerWaitTest
    * 
@@ -828,9 +1349,10 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  public Future<String> traceWithStringCallbackWhileServerWaitTest()
+  @Test
+  public void traceWithStringCallbackWhileServerWaitTest()
       throws Fault {
-    return super.traceWithStringCallbackWhileServerWaitTest();
+    super.traceWithStringCallbackWhileServerWaitTest();
   }
 
   // ///////////////////////////////////////////////////////////////////////

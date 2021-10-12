@@ -108,6 +108,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void stringTest() throws Fault {
     querySSEEndpointAndAssert("mbw/string");
   }
@@ -122,6 +123,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void charTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/char");
     assertEquals(String.valueOf(SSEMessage.MESSAGE.charAt(0)),
@@ -139,6 +141,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void intTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/int");
     assertEquals(Integer.MIN_VALUE, holder.get().readData(Integer.class),
@@ -155,6 +158,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void doubleTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/double");
     assertEquals(Double.MAX_VALUE, holder.get().readData(Double.class),
@@ -171,6 +175,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void bytearrayTest() throws Fault {
     querySSEEndpointAndAssert("mbw/bytearray");
   }
@@ -185,6 +190,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void readerTest() throws Fault {
     querySSEEndpointAndAssert("mbw/reader");
   }
@@ -199,6 +205,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void inputstreamTest() throws Fault {
     querySSEEndpointAndAssert("mbw/inputstream");
   }
@@ -213,6 +220,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void fileTest() throws Fault {
     querySSEEndpointAndAssert("mbw/file");
   }
@@ -227,6 +235,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void datasourceTest() throws Fault {
     querySSEEndpointAndAssert("mbw/datasource");
   }
@@ -241,11 +250,12 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void transformSourceTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/transformsource");
     logTrace("Received", holder.get());
     assertTrue(holder.get().readData().contains(SSEMessage.MESSAGE),
-        "Unexpected message received", holder.get().readData());
+        "Unexpected message received"+ holder.get().readData());
   }
 
   /*
@@ -258,11 +268,12 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void jaxbElementTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/jaxbelement");
     logTrace("Received", holder.get());
     assertTrue(holder.get().readData().contains(SSEMessage.MESSAGE),
-        "Unexpected message received", holder.get().readData());
+        "Unexpected message received"+ holder.get().readData());
   }
 
   /*
@@ -275,11 +286,12 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void multivaluedMapTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("mbw/multivaluedmap");
     logTrace("Received", holder.get());
     assertTrue(holder.get().readData().contains(SSEMessage.MESSAGE),
-        "Unexpected message received", holder.get().readData());
+        "Unexpected message received"+ holder.get().readData());
   }
 
   /*
@@ -292,6 +304,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void streamingOutputTest() throws Fault {
     querySSEEndpointAndAssert("mbw/streamingoutput");
   }
@@ -306,6 +319,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * SseEventSink is closed, invoking any method other than this one and
    * isClosed() would result in an IllegalStateException being thrown.
    */
+  @Test
   public void closeTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("close/reset");
     assertEquals(holder.get().readData(), "RESET", "Reset unsuccessful");
@@ -338,6 +352,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy: check the stage is ever done
    */
+  @Test
   public void sseStageCheckTest() throws Fault {
     LinkedHolder<InboundSseEvent> holder = new LinkedHolder<>();
     WebTarget target = ClientBuilder.newClient()
@@ -349,7 +364,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
       sleepUntilHolderGetsFilled(holder);
       assertNotNull(holder.get(), "No message received");
       assertTrue(holder.get(0).readData().contains(SSEJAXRSClient.MESSAGE),
-          holder.get(0), "does not contain expected", SSEJAXRSClient.MESSAGE);
+          holder.get(0)+ "does not contain expected"+ SSEJAXRSClient.MESSAGE);
       if (!holder.get(1).readData().contains(StageCheckerResource.DONE)) {
         sleepUntilHolderGetsFilled(holder);
       }

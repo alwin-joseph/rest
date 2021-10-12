@@ -36,6 +36,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -86,6 +87,7 @@ public class JAXRSClientIT extends JaxrsCommonClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void completionStageReturnedTest() throws Fault {
     Future<Response> f = ClientBuilder.newClient()
         .register(new JdkLoggingFilter(false)).target(getAbsoluteUrl("async"))

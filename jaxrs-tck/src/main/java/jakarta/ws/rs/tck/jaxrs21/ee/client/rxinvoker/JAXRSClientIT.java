@@ -117,11 +117,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request.
    */
-  public Future<Response> deleteTest() throws Fault {
+  @Test
+  public void deleteTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
     Future<Response> future = rx.delete().toCompletableFuture();
     checkFutureResponseStatus(future, Status.OK);
-    return future;
   }
 
   /*
@@ -133,6 +133,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void deleteThrowsExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
@@ -148,11 +149,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * 
    */
-  public Future<String> deleteWithStringClassTest() throws Fault {
+  @Test
+  public void deleteWithStringClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
     Future<String> future = rx.delete(String.class).toCompletableFuture();
     checkFutureString(future, "delete");
-    return future;
   }
 
   /*
@@ -163,11 +164,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * 
    */
-  public Future<Response> deleteWithResponseClassTest() throws Fault {
+  @Test
+  public void deleteWithResponseClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
     Future<Response> future = rx.delete(Response.class).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -179,6 +180,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void deleteWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
@@ -195,6 +197,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void deleteWithClassThrowsWebApplicationExceptionTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("deletenotok");
     Future<String> future = rx.delete(String.class).toCompletableFuture();
@@ -210,6 +213,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void deleteWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("deletenotok");
@@ -224,12 +228,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    */
-  public Future<String> deleteWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void deleteWithGenericTypeStringTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
     GenericType<String> generic = createGeneric(String.class);
     Future<String> future = rx.delete(generic).toCompletableFuture();
     checkFutureString(future, "delete");
-    return future;
   }
 
   /*
@@ -239,12 +243,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    */
-  public Future<Response> deleteWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void deleteWithGenericTypeResponseTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("delete");
     GenericType<Response> generic = createGeneric(Response.class);
     Future<Response> future = rx.delete(generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -256,6 +260,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void deleteWithGenericTypeThrowsProcessingExceptionTest()
       throws Fault {
     _hostname = NONEXISTING_SITE;
@@ -274,6 +279,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void deleteWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("deletenotok");
@@ -292,6 +298,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void deleteWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("deletenotok");
@@ -311,11 +318,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getTest() throws Fault {
+  @Test
+  public void getTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
     Future<Response> future = rx.get().toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -327,6 +334,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void getThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
@@ -341,11 +349,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<String> getWithStringClassTest() throws Fault {
+  @Test
+  public void getWithStringClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
     Future<String> future = rx.get(String.class).toCompletableFuture();
     checkFutureString(future, "get");
-    return future;
   }
 
   /*
@@ -355,11 +363,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getWithResponseClassTest() throws Fault {
+  @Test
+  public void getWithResponseClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
     Future<Response> future = rx.get(Response.class).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -371,6 +379,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void getWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
@@ -387,6 +396,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void getWithClassThrowsWebApplicationExceptionTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("getnotok");
     Future<String> future = rx.get(String.class).toCompletableFuture();
@@ -402,6 +412,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void getWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("getnotok");
@@ -416,12 +427,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<String> getWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void getWithGenericTypeStringTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
     GenericType<String> generic = createGeneric(String.class);
     Future<String> future = rx.get(generic).toCompletableFuture();
     checkFutureString(future, "get");
-    return future;
   }
 
   /*
@@ -431,12 +442,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void getWithGenericTypeResponseTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
     GenericType<Response> generic = createGeneric(Response.class);
     Future<Response> future = rx.get(generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -448,6 +459,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void getWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("get");
@@ -465,6 +477,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void getWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("getnotok");
@@ -482,6 +495,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void getWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("getnotok");
@@ -501,11 +515,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP HEAD method for the current request
    */
-  public Future<Response> headTest() throws Fault {
+  @Test
+  public void headTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("head");
     Future<Response> future = rx.head().toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -517,6 +531,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void headThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("head");
@@ -535,7 +550,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodTest() throws Fault {
+  @Test
+  public void methodTest() throws Fault {
     Future<Response> future = null;
     for (String method : METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -543,7 +559,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -555,6 +570,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Future<Response> future = null;
@@ -573,7 +589,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<String> methodWithStringClassTest() throws Fault {
+  @Test
+  public void methodWithStringClassTest() throws Fault {
     Future<String> future = null;
     for (String method : METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -581,7 +598,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, String.class).toCompletableFuture();
       checkFutureString(future, method);
     }
-    return future;
   }
 
   /*
@@ -591,7 +607,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodWithResponseClassTest() throws Fault {
+  @Test
+  public void methodWithResponseClassTest() throws Fault {
     Future<Response> future = null;
     for (String method : METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -599,7 +616,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, Response.class).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -611,6 +627,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Future<String> future = null;
@@ -631,6 +648,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithClassThrowsWebApplicationExceptionTest() throws Fault {
     Future<String> future = null;
     for (String method : METHODS) {
@@ -650,6 +668,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Future<Response> future = null;
@@ -668,7 +687,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<String> methodWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void methodWithGenericTypeStringTest() throws Fault {
     GenericType<String> generic = createGeneric(String.class);
     Future<String> future = null;
     for (String method : METHODS) {
@@ -677,7 +697,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, generic).toCompletableFuture();
       checkFutureString(future, method);
     }
-    return future;
   }
 
   /*
@@ -687,7 +706,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void methodWithGenericTypeResponseTest() throws Fault {
     GenericType<Response> generic = createGeneric(Response.class);
     Future<Response> future = null;
     for (String method : METHODS) {
@@ -696,7 +716,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, generic).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -708,6 +727,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodWithGenericTypeThrowsProcessingExceptionTest()
       throws Fault {
     _hostname = NONEXISTING_SITE;
@@ -730,6 +750,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     Future<String> future = null;
@@ -752,6 +773,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Future<Response> future = null;
@@ -771,7 +793,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodWithEntityTest() throws Fault {
+  @Test
+  public void methodWithEntityTest() throws Fault {
     Future<Response> future = null;
     for (String method : ENTITY_METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -780,7 +803,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, entity).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -792,6 +814,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodWithEntityThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Future<Response> future = null;
@@ -811,7 +834,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<String> methodWithStringClassWithEntityTest() throws Fault {
+  @Test
+  public void methodWithStringClassWithEntityTest() throws Fault {
     Future<String> future = null;
     for (String method : ENTITY_METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -820,7 +844,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, entity, String.class).toCompletableFuture();
       checkFutureString(future, method);
     }
-    return future;
   }
 
   /*
@@ -830,7 +853,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodWithResponseClassWithEntityTest() throws Fault {
+  @Test
+  public void methodWithResponseClassWithEntityTest() throws Fault {
     Future<Response> future = null;
     for (String method : ENTITY_METHODS) {
       CompletionStageRxInvoker rx = startRxInvokerForMethod(
@@ -839,7 +863,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, entity, Response.class).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -851,6 +874,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodWithClassWithEntityThrowsProcessingExceptionTest()
       throws Fault {
     _hostname = NONEXISTING_SITE;
@@ -873,6 +897,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithClassWithEntityThrowsWebApplicationExceptionTest()
       throws Fault {
     Future<String> future = null;
@@ -895,6 +920,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithClassWithEntityThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Future<Response> future = null;
@@ -914,7 +940,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<String> methodWithGenericTypeStringWithEntityTest()
+  @Test
+  public void methodWithGenericTypeStringWithEntityTest()
       throws Fault {
     Future<String> future = null;
     GenericType<String> generic = createGeneric(String.class);
@@ -925,7 +952,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, entity, generic).toCompletableFuture();
       checkFutureString(future, method);
     }
-    return future;
   }
 
   /*
@@ -935,7 +961,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke an arbitrary method for the current request
    */
-  public Future<Response> methodWithGenericTypeResponseWithEntityTest()
+  @Test
+  public void methodWithGenericTypeResponseWithEntityTest()
       throws Fault {
     Future<Response> future = null;
     GenericType<Response> generic = createGeneric(Response.class);
@@ -946,7 +973,6 @@ public class JAXRSClientIT extends JAXRSCommonClient {
       future = rx.method(method, entity, generic).toCompletableFuture();
       checkFutureOkResponse(future);
     }
-    return future;
   }
 
   /*
@@ -958,6 +984,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void methodWithGenericTypeWithEntityThrowsProcessingExceptionTest()
       throws Fault {
     _hostname = NONEXISTING_SITE;
@@ -981,6 +1008,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithGenericTypeWithEntityThrowsWebApplicationExceptionTest()
       throws Fault {
     Future<String> future = null;
@@ -1004,6 +1032,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void methodWithGenericTypeWithEntityThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Future<Response> future = null;
@@ -1028,11 +1057,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsTest() throws Fault {
+  @Test
+  public void optionsTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
     Future<Response> future = rx.options().toCompletableFuture();
     checkFutureResponseStatus(future, Status.OK);
-    return future;
   }
 
   /*
@@ -1044,6 +1073,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void optionsThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
@@ -1058,11 +1088,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<String> optionsWithStringClassTest() throws Fault {
+  @Test
+  public void optionsWithStringClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
     Future<String> future = rx.options(String.class).toCompletableFuture();
     checkFutureString(future, "options");
-    return future;
   }
 
   /*
@@ -1072,11 +1102,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsWithResponseClassTest() throws Fault {
+  @Test
+  public void optionsWithResponseClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
     Future<Response> future = rx.options(Response.class).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1088,6 +1118,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void optionsWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
@@ -1104,6 +1135,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void optionsWithClassThrowsWebApplicationExceptionTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("optionsnotok");
     Future<String> future = rx.options(String.class).toCompletableFuture();
@@ -1119,6 +1151,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void optionsWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("optionsnotok");
@@ -1133,12 +1166,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<String> optionsWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void optionsWithGenericTypeStringTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
     GenericType<String> generic = createGeneric(String.class);
     Future<String> future = rx.options(generic).toCompletableFuture();
     checkFutureString(future, "options");
-    return future;
   }
 
   /*
@@ -1148,12 +1181,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void optionsWithGenericTypeResponseTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("options");
     GenericType<Response> generic = createGeneric(Response.class);
     Future<Response> future = rx.options(generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1165,6 +1198,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void optionsWithGenericTypeThrowsProcessingExceptionTest()
       throws Fault {
     _hostname = NONEXISTING_SITE;
@@ -1183,6 +1217,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void optionsWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("optionsnotok");
@@ -1201,6 +1236,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void optionsWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("optionsnotok");
@@ -1220,12 +1256,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postTest() throws Fault {
+  @Test
+  public void postTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     Future<Response> future = rx.post(entity).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1237,6 +1273,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void postThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
@@ -1252,12 +1289,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<String> postWithStringClassTest() throws Fault {
+  @Test
+  public void postWithStringClassTest() throws Fault {
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
     Future<String> future = rx.post(entity, String.class).toCompletableFuture();
     checkFutureString(future, "post");
-    return future;
   }
 
   /*
@@ -1267,13 +1304,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postWithResponseClassTest() throws Fault {
+  @Test
+  public void postWithResponseClassTest() throws Fault {
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
     Future<Response> future = rx.post(entity, Response.class)
         .toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1285,6 +1322,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void postWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
@@ -1302,6 +1340,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void postWithClassThrowsWebApplicationExceptionTest() throws Fault {
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("postnotok");
@@ -1318,6 +1357,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void postWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("postnotok");
@@ -1334,13 +1374,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<String> postWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void postWithGenericTypeStringTest() throws Fault {
     GenericType<String> generic = createGeneric(String.class);
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
     Future<String> future = rx.post(entity, generic).toCompletableFuture();
     checkFutureString(future, "post");
-    return future;
   }
 
   /*
@@ -1350,13 +1390,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void postWithGenericTypeResponseTest() throws Fault {
     GenericType<Response> generic = createGeneric(Response.class);
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("post");
     Future<Response> future = rx.post(entity, generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1368,6 +1408,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void postWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
@@ -1386,6 +1427,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void postWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     Entity<String> entity = Entity.entity("post", MediaType.WILDCARD_TYPE);
@@ -1405,6 +1447,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void postWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("postnotok");
@@ -1425,12 +1468,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP PUT method for the current request
    */
-  public Future<Response> putTest() throws Fault {
+  @Test
+  public void putTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     Future<Response> future = rx.put(entity).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1442,6 +1485,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void putThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
@@ -1457,12 +1501,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<String> putWithStringClassTest() throws Fault {
+  @Test
+  public void putWithStringClassTest() throws Fault {
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
     Future<String> future = rx.put(entity, String.class).toCompletableFuture();
     checkFutureString(future, "put");
-    return future;
   }
 
   /*
@@ -1472,13 +1516,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<Response> putWithResponseClassTest() throws Fault {
+  @Test
+  public void putWithResponseClassTest() throws Fault {
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
     Future<Response> future = rx.put(entity, Response.class)
         .toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1490,6 +1534,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void putWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
@@ -1507,6 +1552,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void putWithClassThrowsWebApplicationExceptionTest() throws Fault {
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("putnotok");
@@ -1523,6 +1569,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void putWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
@@ -1539,13 +1586,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<String> putWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void putWithGenericTypeStringTest() throws Fault {
     GenericType<String> generic = createGeneric(String.class);
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
     Future<String> future = rx.put(entity, generic).toCompletableFuture();
     checkFutureString(future, "put");
-    return future;
   }
 
   /*
@@ -1555,13 +1602,13 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<Response> putWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void putWithGenericTypeResponseTest() throws Fault {
     GenericType<Response> generic = createGeneric(Response.class);
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("put");
     Future<Response> future = rx.put(entity, generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1573,6 +1620,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void putWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     GenericType<String> generic = createGeneric(String.class);
@@ -1591,6 +1639,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void putWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     GenericType<String> generic = createGeneric(String.class);
@@ -1609,6 +1658,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void putWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     Entity<String> entity = Entity.entity("put", MediaType.WILDCARD_TYPE);
@@ -1629,11 +1679,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceTest() throws Fault {
+  @Test
+  public void traceTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
     Future<Response> future = rx.trace().toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1645,6 +1695,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void traceThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
@@ -1659,11 +1710,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<String> traceWithStringClassTest() throws Fault {
+  @Test
+  public void traceWithStringClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
     Future<String> future = rx.trace(String.class).toCompletableFuture();
     checkFutureString(future, "trace");
-    return future;
   }
 
   /*
@@ -1673,11 +1724,11 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceWithResponseClassTest() throws Fault {
+  @Test
+  public void traceWithResponseClassTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
     Future<Response> future = rx.trace(Response.class).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1689,6 +1740,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void traceWithClassThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
@@ -1705,6 +1757,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void traceWithClassThrowsWebApplicationExceptionTest() throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("tracenotok");
     Future<String> future = rx.trace(String.class).toCompletableFuture();
@@ -1720,6 +1773,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void traceWithClassThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("tracenotok");
@@ -1734,12 +1788,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<String> traceWithGenericTypeStringTest() throws Fault {
+  @Test
+  public void traceWithGenericTypeStringTest() throws Fault {
     GenericType<String> generic = createGeneric(String.class);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
     Future<String> future = rx.trace(generic).toCompletableFuture();
     checkFutureString(future, "trace");
-    return future;
   }
 
   /*
@@ -1749,12 +1803,12 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceWithGenericTypeResponseTest() throws Fault {
+  @Test
+  public void traceWithGenericTypeResponseTest() throws Fault {
     GenericType<Response> generic = createGeneric(Response.class);
     CompletionStageRxInvoker rx = startRxInvokerForMethod("trace");
     Future<Response> future = rx.trace(generic).toCompletableFuture();
     checkFutureOkResponse(future);
-    return future;
   }
 
   /*
@@ -1766,6 +1820,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * received HTTP response fails (e.g. in a filter or during conversion of the
    * response entity data to an instance of a particular Java type).
    */
+  @Test
   public void traceWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
     _hostname = NONEXISTING_SITE;
     GenericType<String> generic = createGeneric(String.class);
@@ -1783,6 +1838,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void traceWithGenericTypeThrowsWebApplicationExceptionTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("tracenotok");
@@ -1801,6 +1857,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * of the response returned by the server is not successful and the specified
    * response type is not Response.
    */
+  @Test
   public void traceWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest()
       throws Fault {
     CompletionStageRxInvoker rx = startRxInvokerForMethod("tracenotok");
@@ -1829,8 +1886,8 @@ public class JAXRSClientIT extends JAXRSCommonClient {
   }
 
   protected void assertOkAndLog(Response response, Status status) throws Fault {
-    assertFault(response.getStatus() == status.getStatusCode(),
-        "Returned unexpected status", response.getStatus());
+    assertTrue(response.getStatus() == status.getStatusCode(),
+        "Returned unexpected status"+ response.getStatus());
     String msg = new StringBuilder().append("Returned status ")
         .append(status.getStatusCode()).append(" (").append(status.name())
         .append(")").toString();
@@ -1849,21 +1906,21 @@ public class JAXRSClientIT extends JAXRSCommonClient {
   }
 
   protected void checkFutureOkResponse(Future<Response> future) throws Fault {
-    assertFault(!future.isDone(), "Future cannot be done, yet!");
+    assertTrue(!future.isDone(), "Future cannot be done, yet!");
     checkFutureResponseStatus(future, Status.OK);
   }
 
   protected void checkFutureString(Future<String> future, String expectedValue)
       throws Fault {
-    assertFault(!future.isDone(), "Future cannot be done, yet!");
+    assertTrue(!future.isDone(), "Future cannot be done, yet!");
     String value = null;
     try {
       value = future.get();
     } catch (Exception e) {
       throw new Fault(e);
     }
-    assertFault(expectedValue.equalsIgnoreCase(value), "expected value",
-        expectedValue, "differes from acquired value", value);
+    assertTrue(expectedValue.equalsIgnoreCase(value), "expected value"+
+        expectedValue+ "differes from acquired value"+ value);
   }
 
   protected void //

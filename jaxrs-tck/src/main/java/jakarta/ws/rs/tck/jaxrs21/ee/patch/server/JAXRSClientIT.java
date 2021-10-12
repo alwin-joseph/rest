@@ -84,6 +84,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * @assertion_ids: JAXRS:SPEC:124;
    * 
    */
+  @Test
   public void patchTest() throws Fault {
     AdaptiveMethodFactory.getMethodMap().put("PATCH", PatchMethod.class);
     setProperty(Property.REQUEST, buildRequest("PATCH", "patch"));

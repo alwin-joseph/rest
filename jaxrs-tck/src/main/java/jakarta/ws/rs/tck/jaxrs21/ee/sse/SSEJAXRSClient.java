@@ -25,7 +25,7 @@ import jakarta.ws.rs.sse.SseEventSource;
 
 import jakarta.ws.rs.tck.common.client.JaxrsCommonClient;
 import jakarta.ws.rs.tck.common.util.Holder;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @since 2.1
  */
@@ -56,8 +56,8 @@ public abstract class SSEJAXRSClient extends JaxrsCommonClient {
       source.open();
       sleep = sleepUntilHolderGetsFilled(holder);
       assertTrue(source.isOpen(), "SseEventSource#isOpen returns false");
-    } catch (Fault f) {
-      throw f;
+    // } catch (Fault f) {
+    //   throw f;
     } catch (Exception e) {
       throw new Fault(e);
     }

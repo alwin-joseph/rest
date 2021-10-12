@@ -83,6 +83,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void exceptionMapperPriorityTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "exception"));
     setProperty(Property.SEARCH_STRING, ExceptionMapperOne.class.getName());
@@ -96,6 +97,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void paramConverterPriorityTest() throws Fault {
     setProperty(Property.REQUEST,
         buildRequest(Request.GET, "converter?id=something"));

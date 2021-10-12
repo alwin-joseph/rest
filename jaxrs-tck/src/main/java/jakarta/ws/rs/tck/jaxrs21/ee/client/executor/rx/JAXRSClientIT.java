@@ -49,7 +49,6 @@ import org.junit.jupiter.api.AfterEach;
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
 /**
  * @since 2.1
@@ -76,7 +75,7 @@ public class JAXRSClientIT
     TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
   }
 
-  @Deployment(testable = false)
+  @Deployment(testable = false, name = "jaxrs21_ee_client_executor_rx_deployment")
   public static WebArchive createDeployment() throws IOException{
 
     WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_client_executor_rx_web.war");
@@ -97,8 +96,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request.
    */
-  public Future<Response> deleteTest() throws Fault {
-    return super.deleteTest();
+  @Test
+  public void deleteTest() throws Fault {
+    super.deleteTest();
   }
 
   /*
@@ -109,8 +109,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * 
    */
-  public Future<String> deleteWithStringClassTest() throws Fault {
-    return super.deleteWithStringClassTest();
+  @Test
+  public void deleteWithStringClassTest() throws Fault {
+    super.deleteWithStringClassTest();
   }
 
   /*
@@ -121,8 +122,9 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    * 
    */
-  public Future<Response> deleteWithResponseClassTest() throws Fault {
-    return super.deleteWithResponseClassTest();
+  @Test
+  public void deleteWithResponseClassTest() throws Fault {
+    super.deleteWithResponseClassTest();
   }
 
   /*
@@ -132,8 +134,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    */
-  public Future<String> deleteWithGenericTypeStringTest() throws Fault {
-    return super.deleteWithGenericTypeStringTest();
+  @Test
+  public void deleteWithGenericTypeStringTest() throws Fault {
+    super.deleteWithGenericTypeStringTest();
   }
 
   /*
@@ -143,8 +146,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP DELETE method for the current request
    */
-  public Future<Response> deleteWithGenericTypeResponseTest() throws Fault {
-    return super.deleteWithGenericTypeResponseTest();
+  @Test
+  public void deleteWithGenericTypeResponseTest() throws Fault {
+    super.deleteWithGenericTypeResponseTest();
   }
 
   // ------------------------------------------------------------------
@@ -158,8 +162,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getTest() throws Fault {
-    return super.getTest();
+  @Test
+  public void getTest() throws Fault {
+    super.getTest();
   }
 
   /*
@@ -169,8 +174,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<String> getWithStringClassTest() throws Fault {
-    return super.getWithStringClassTest();
+  @Test
+  public void getWithStringClassTest() throws Fault {
+    super.getWithStringClassTest();
   }
 
   /*
@@ -180,8 +186,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getWithResponseClassTest() throws Fault {
-    return super.getWithResponseClassTest();
+  @Test
+  public void getWithResponseClassTest() throws Fault {
+    super.getWithResponseClassTest();
   }
 
   /*
@@ -191,8 +198,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<String> getWithGenericTypeStringTest() throws Fault {
-    return super.getWithGenericTypeStringTest();
+  @Test
+  public void getWithGenericTypeStringTest() throws Fault {
+    super.getWithGenericTypeStringTest();
   }
 
   /*
@@ -202,8 +210,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP GET method for the current request
    */
-  public Future<Response> getWithGenericTypeResponseTest() throws Fault {
-    return super.getWithGenericTypeResponseTest();
+  @Test
+  public void getWithGenericTypeResponseTest() throws Fault {
+    super.getWithGenericTypeResponseTest();
   }
 
   // ------------------------------------------------------------------
@@ -217,8 +226,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP HEAD method for the current request
    */
-  public Future<Response> headTest() throws Fault {
-    return super.headTest();
+  @Test
+  public void headTest() throws Fault {
+    super.headTest();
   }
 
   // ------------------------------------------------------------------
@@ -232,8 +242,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsTest() throws Fault {
-    return super.optionsTest();
+  @Test
+  public void optionsTest() throws Fault {
+    super.optionsTest();
   }
 
   /*
@@ -243,8 +254,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<String> optionsWithStringClassTest() throws Fault {
-    return super.optionsWithStringClassTest();
+  @Test
+  public void optionsWithStringClassTest() throws Fault {
+    super.optionsWithStringClassTest();
   }
 
   /*
@@ -254,8 +266,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsWithResponseClassTest() throws Fault {
-    return super.optionsWithResponseClassTest();
+  @Test
+  public void optionsWithResponseClassTest() throws Fault {
+    super.optionsWithResponseClassTest();
   }
 
   /*
@@ -265,8 +278,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<String> optionsWithGenericTypeStringTest() throws Fault {
-    return super.optionsWithGenericTypeStringTest();
+  @Test
+  public void optionsWithGenericTypeStringTest() throws Fault {
+    super.optionsWithGenericTypeStringTest();
   }
 
   /*
@@ -276,8 +290,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP options method for the current request
    */
-  public Future<Response> optionsWithGenericTypeResponseTest() throws Fault {
-    return super.optionsWithGenericTypeResponseTest();
+  @Test
+  public void optionsWithGenericTypeResponseTest() throws Fault {
+    super.optionsWithGenericTypeResponseTest();
   }
 
   // ------------------------------------------------------------------
@@ -291,8 +306,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postTest() throws Fault {
-    return super.postTest();
+  @Test
+  public void postTest() throws Fault {
+    super.postTest();
   }
 
   /*
@@ -302,8 +318,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<String> postWithStringClassTest() throws Fault {
-    return super.postWithStringClassTest();
+  @Test
+  public void postWithStringClassTest() throws Fault {
+    super.postWithStringClassTest();
   }
 
   /*
@@ -313,8 +330,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postWithResponseClassTest() throws Fault {
-    return super.postWithResponseClassTest();
+  @Test
+  public void postWithResponseClassTest() throws Fault {
+    super.postWithResponseClassTest();
   }
 
   /*
@@ -324,8 +342,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<String> postWithGenericTypeStringTest() throws Fault {
-    return super.postWithGenericTypeStringTest();
+  @Test
+  public void postWithGenericTypeStringTest() throws Fault {
+    super.postWithGenericTypeStringTest();
   }
 
   /*
@@ -335,8 +354,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP post method for the current request
    */
-  public Future<Response> postWithGenericTypeResponseTest() throws Fault {
-    return super.postWithGenericTypeResponseTest();
+  @Test
+  public void postWithGenericTypeResponseTest() throws Fault {
+    super.postWithGenericTypeResponseTest();
   }
 
   // ------------------------------------------------------------------
@@ -350,8 +370,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP PUT method for the current request
    */
-  public Future<Response> putTest() throws Fault {
-    return super.putTest();
+  @Test
+  public void putTest() throws Fault {
+    super.putTest();
   }
 
   /*
@@ -361,8 +382,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<String> putWithStringClassTest() throws Fault {
-    return super.putWithStringClassTest();
+  @Test
+  public void putWithStringClassTest() throws Fault {
+    super.putWithStringClassTest();
   }
 
   /*
@@ -372,8 +394,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<Response> putWithResponseClassTest() throws Fault {
-    return super.putWithResponseClassTest();
+  @Test
+  public void putWithResponseClassTest() throws Fault {
+    super.putWithResponseClassTest();
   }
 
   /*
@@ -383,8 +406,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<String> putWithGenericTypeStringTest() throws Fault {
-    return super.putWithGenericTypeStringTest();
+  @Test
+  public void putWithGenericTypeStringTest() throws Fault {
+    super.putWithGenericTypeStringTest();
   }
 
   /*
@@ -394,8 +418,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP put method for the current request
    */
-  public Future<Response> putWithGenericTypeResponseTest() throws Fault {
-    return super.putWithGenericTypeResponseTest();
+  @Test
+  public void putWithGenericTypeResponseTest() throws Fault {
+    super.putWithGenericTypeResponseTest();
   }
 
   // ------------------------------------------------------------------
@@ -409,8 +434,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceTest() throws Fault {
-    return super.traceTest();
+  @Test
+  public void traceTest() throws Fault {
+    super.traceTest();
   }
 
   /*
@@ -420,8 +446,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<String> traceWithStringClassTest() throws Fault {
-    return super.traceWithStringClassTest();
+  @Test
+  public void traceWithStringClassTest() throws Fault {
+    super.traceWithStringClassTest();
   }
 
   /*
@@ -431,8 +458,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceWithResponseClassTest() throws Fault {
-    return super.traceWithResponseClassTest();
+  @Test
+  public void traceWithResponseClassTest() throws Fault {
+    super.traceWithResponseClassTest();
   }
 
   /*
@@ -442,8 +470,9 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<String> traceWithGenericTypeStringTest() throws Fault {
-    return super.traceWithGenericTypeStringTest();
+  @Test
+  public void traceWithGenericTypeStringTest() throws Fault {
+    super.traceWithGenericTypeStringTest();
   }
 
   /*
@@ -453,9 +482,282 @@ public class JAXRSClientIT
    * 
    * @test_Strategy: Invoke HTTP trace method for the current request
    */
-  public Future<Response> traceWithGenericTypeResponseTest() throws Fault {
-    return super.traceWithGenericTypeResponseTest();
+  @Test
+  public void traceWithGenericTypeResponseTest() throws Fault {
+    super.traceWithGenericTypeResponseTest();
   }
+
+  @Override
+  public void deleteThrowsExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void deleteWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void getWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void headThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithStringClassTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithResponseClassTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeStringTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeResponseTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void methodWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithEntityTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithStringClassWithEntityTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithResponseClassWithEntityTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassWithEntityThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithClassWithEntityThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeStringWithEntityTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeResponseWithEntityTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void methodWithGenericTypeWithEntityThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void optionsWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+
+  @Override
+  public void optionsWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void postWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void putWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithClassThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithClassThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithClassThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithGenericTypeThrowsProcessingExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithGenericTypeThrowsWebApplicationExceptionTest() throws Fault {
+    //do nothing
+  }
+  @Override
+  public void traceWithGenericTypeThrowsNoWebApplicationExceptionForResponseTest() throws Fault {
+    //do nothing
+  }
+  
 
   // ///////////////////////////////////////////////////////////////////////
   // utility methods

@@ -45,6 +45,7 @@ import org.junit.jupiter.api.AfterEach;
 /**
  * @since 2.1
  */
+@ExtendWith(ArquillianExtension.class)
 public class JAXRSClientIT extends JaxrsCommonClient {
 
   private static final long serialVersionUID = 21L;
@@ -82,6 +83,7 @@ public class JAXRSClientIT extends JaxrsCommonClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void subResourceLocatorAsClassTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "sub"));
     setProperty(Property.SEARCH_STRING, "OK");

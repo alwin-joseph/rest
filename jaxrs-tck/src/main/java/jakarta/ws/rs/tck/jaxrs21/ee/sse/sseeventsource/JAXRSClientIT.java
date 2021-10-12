@@ -53,6 +53,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -124,6 +125,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * "Retry-After" HTTP header value as a one-time override of the reconnect
    * delay.
    */
+  @Test
   public void defaultWaiting1s() throws Fault {
     // define
     Holder<InboundSseEvent> holder = new Holder<>();
@@ -187,6 +189,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * "Retry-After" HTTP header value as a one-time override of the reconnect
    * delay.
    */
+  @Test
   public void wait2Seconds() throws Fault {
     // set to return 503
     setProperty(Property.REQUEST, buildRequest(Request.GET, "su/available"));
@@ -222,6 +225,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * the event source will wait 500 ms before attempting to reconnect to the SSE
    * endpoint.
    */
+  @Test
   public void connectionLostForDefault500msTest() throws Fault {
     resetUnavailableServer();
 
@@ -246,7 +250,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
     int cnt = getServerCount();
     logTrace("Received count:", cnt);
     assertTrue(cnt > 3 && cnt < 7,
-        "The client tried to reconnected unexpectedly", cnt, "times!");
+        "The client tried to reconnected unexpectedly"+ cnt+ "times!");
   }
 
   /*
@@ -263,6 +267,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * by the endpoint and adjusts the reconnect delay accordingly, using the last
    * received retry field value as the reconnect delay.
    */
+  @Test
   public void reconnectByEventMethodTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("su/reconnectdelay");
     assertTrue(holder.get().isReconnectDelaySet(),
@@ -286,6 +291,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * by the endpoint and adjusts the reconnect delay accordingly, using the last
    * received retry field value as the reconnect delay.
    */
+  @Test
   public void userReconnectByEventMethodTest() throws Fault {
     Holder<InboundSseEvent> holder = querySSEEndpoint("su/userreconnectdelay");
     assertTrue(holder.get().isReconnectDelaySet(),
@@ -306,6 +312,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * @test_Strategy: JAXRS:JAVADOC:1197; JAXRS:JAVADOC:1198; JAXRS:JAVADOC:1199;
    * JAXRS:JAVADOC:1200; JAXRS:JAVADOC:1201; JAXRS:JAVADOC:1202;
    */
+  @Test
   public void stringTest() throws Fault {
     mediaTest(String.class, SSEMessage.MESSAGE, MediaType.TEXT_PLAIN,
         MediaType.TEXT_PLAIN_TYPE, MediaType.TEXT_HTML_TYPE);
@@ -320,6 +327,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void byteArrayTest() throws Fault {
     BiPredicate<Object, Object> p = (a, b) -> a.equals(new String((byte[]) b));
     mediaTest(byte[].class, SSEMessage.MESSAGE, p, MediaType.TEXT_PLAIN,
@@ -337,6 +345,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void inputStreamTest() throws Fault {
     BiPredicate<Object, Object> p = (a, b) -> {
       try {
@@ -360,6 +369,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void readerTest() throws Fault {
     BiPredicate<Object, Object> p = (a, b) -> {
       try {
@@ -383,6 +393,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void fileTest() throws Fault {
     BiPredicate<Object, Object> p = (a, b) -> {
       try {
@@ -406,6 +417,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void dataSourceTest() throws Fault {
     BiPredicate<Object, Object> p = (a, b) -> {
       try {
@@ -430,6 +442,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void transformSourceTest() throws Fault {
     mediaTestLevel = 2;
     BiPredicate<Object, Object> p = (a, b) -> {
@@ -460,6 +473,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void jaxbElementTest() throws Fault {
     mediaTestLevel = 3;
     @SuppressWarnings("unchecked")
@@ -482,6 +496,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void xmlTest() throws Fault {
     mediaTestLevel = 2;
     BiPredicate<Object, Object> p = (a, b) -> ((JaxbKeyValueBean) b).getValue().equals(a);
@@ -500,6 +515,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void multivaluedMapTest() throws Fault {
     mediaTestLevel = 3;
     @SuppressWarnings("unchecked")
@@ -524,6 +540,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * @test_Strategy: reconnectingEvery should send request to the server just
    * twice, once without response, once after reconnect timeout with a response
    */
+  @Test
   public void connectionLostFor1500msTest() throws Fault {
     resetUnavailableServer();
 
@@ -569,6 +586,7 @@ public class JAXRSClientIT extends SSEJAXRSClient {
    * 
    * @test_Strategy:
    */
+  @Test
   public void closeTest() throws Fault {
     boolean isOpen = true;
     LinkedHolder<InboundSseEvent> holder = new LinkedHolder<>();
@@ -698,20 +716,20 @@ public class JAXRSClientIT extends SSEJAXRSClient {
     switch (mediaTestLevel) {
     case 0:
       assertTrue(comparator.test(compare, holder.get().readData(queryClass)),
-          "Unexpected message received", holder.get().readData());
+          "Unexpected message received"+ holder.get().readData());
     case 1:
       assertTrue(comparator.test(compare, holder.get().readData(type)),
-          "Unexpected message received", holder.get().readData());
+          "Unexpected message received"+ holder.get().readData());
     case 2:
       assertTrue(
           comparator.test(compare,
               holder.get().readData(queryClass, classMedia)),
-          "Unexpected message received", holder.get().readData());
+          "Unexpected message received"+ holder.get().readData());
     case 3:
       assertTrue(
           comparator.test(compare,
               holder.get().readData(type, genericTypeMedia)),
-          "Unexpected message received", holder.get().readData());
+          "Unexpected message received"+ holder.get().readData());
     }
   }
 
