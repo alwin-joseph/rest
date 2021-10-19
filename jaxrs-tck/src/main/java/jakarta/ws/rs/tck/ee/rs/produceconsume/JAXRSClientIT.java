@@ -21,27 +21,64 @@ import jakarta.ws.rs.tck.common.JAXRSCommonClient;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSClient extends JAXRSCommonClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JAXRSCommonClient {
 
   private static final long serialVersionUID = 3927081991341346347L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_produceconsume_web/resource");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/produceconsume/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_produceconsume_web.war");
+    archive.addClasses(TSAppConfig.class, Resource.class);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -54,6 +91,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @produces text/plain
       */
+  @Test
   public void anyPlainTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "plain"));
     setProperty(Property.SEARCH_STRING, MediaType.TEXT_PLAIN);
@@ -70,6 +108,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @produces text/plain
       */
+  @Test
   public void anyWidgetsxmlTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "widgetsxml"));
     setProperty(Property.SEARCH_STRING, Resource.WIDGETS_XML);
@@ -86,6 +125,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @produces unknown/unknown
       */
+  @Test
   public void anyUnknownTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "unknown"));
     setProperty(Property.SEARCH_STRING, Resource.UNKNOWN);
@@ -101,6 +141,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Produces does not match the request Accept header. test accept
    * text/plain @produces *.*
    */
+  @Test
   public void widgetsXmlAnyTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS, "Accept: " + Resource.WIDGETS_XML);
     setProperty(Property.REQUEST, buildRequest(Request.GET, "any"));
@@ -117,6 +158,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Produces does not match the request Accept header. test accept
    * text/plain @produces *.*
    */
+  @Test
   public void plainAnyTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -134,6 +176,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Produces does not match the request Accept header. test accept
    * unknown/unknown @produces *.*
    */
+  @Test
   public void unknownAnyTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS, "Accept: " + Resource.UNKNOWN);
     setProperty(Property.REQUEST, buildRequest(Request.GET, "any"));
@@ -150,6 +193,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Produces does not match the request Accept header. test accept
    * text/plain @produces text/html
    */
+  @Test
   public void htmlPlainTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -167,6 +211,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Produces does not match the request Accept header. test accept
    * text/plain @produces unknown/unknown
    */
+  @Test
   public void htmlUnknownTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -185,6 +230,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Accept header. accept
    * text/plain @Consumes text/plain+xml
    */
+  @Test
   public void plainPlusProducePlainTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -205,6 +251,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Accept header. accept
    * text/plain @Consumes text/plain+xml
    */
+  @Test
   public void plainPlusProduceXmlTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS, buildAccept(MediaType.TEXT_XML_TYPE));
     setProperty(Property.REQUEST_HEADERS,
@@ -226,6 +273,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @Consumes text/plain
       */
+  @Test
   public void anyPlainConsumesTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.POST, "plain"));
     setProperty(Property.SEARCH_STRING, MediaType.TEXT_PLAIN);
@@ -243,6 +291,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @Consumes text/plain
       */
+  @Test
   public void anyWidgetsxmlConsumesTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.POST, "widgetsxml"));
     setProperty(Property.SEARCH_STRING, Resource.WIDGETS_XML);
@@ -260,6 +309,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    *//*
       * @Consumes unknown/unknown
       */
+  @Test
   public void anyUnknownConsumesTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.POST, "unknown"));
     setProperty(Property.SEARCH_STRING, Resource.UNKNOWN);
@@ -275,6 +325,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header. test
    * content-type text/plain @Consumes *.*
    */
+  @Test
   public void widgetsXmlAnyConsumesTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "Content-Type: " + Resource.WIDGETS_XML);
@@ -292,6 +343,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header. test
    * content-type text/plain @Consumes *.*
    */
+  @Test
   public void plainAnyConsumesTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildContentType(MediaType.TEXT_PLAIN_TYPE));
@@ -309,6 +361,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header. test
    * content-type unknown/unknown @Consumes *.*
    */
+  @Test
   public void unknownAnyConsumesTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS, "Content-type: " + Resource.UNKNOWN);
     setProperty(Property.REQUEST, buildRequest(Request.POST, "any"));
@@ -325,6 +378,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header. test
    * content-type text/html @Consumes text/plain
    */
+  @Test
   public void htmlPlainConsumesTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildContentType(MediaType.TEXT_HTML_TYPE));
@@ -343,6 +397,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header. test
    * content-type text/html @Consumes text/plain
    */
+  @Test
   public void htmlUnknownConsumesTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildContentType(MediaType.TEXT_HTML_TYPE));
@@ -361,6 +416,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header.
    * content-type text/plain @Consumes text/plain+xml
    */
+  @Test
   public void plainPlusConsumePlainTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildContentType(MediaType.TEXT_PLAIN_TYPE));
@@ -378,6 +434,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * value of @Consumes does not match the request Content-Type header.
    * content-type text/plain @Consumes text/plain+xml
    */
+  @Test
   public void plainPlusConsumeXmlTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildContentType(MediaType.TEXT_XML_TYPE));

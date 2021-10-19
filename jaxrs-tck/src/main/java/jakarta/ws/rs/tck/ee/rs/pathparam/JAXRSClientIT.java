@@ -16,34 +16,80 @@
 
 package jakarta.ws.rs.tck.ee.rs.pathparam;
 
-import jakarta.ws.rs.tck.lib.util.TestUtil;
 import jakarta.ws.rs.tck.ee.rs.JaxrsParamClient;
 
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
+
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSClient extends JaxrsParamClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JaxrsParamClient {
 
   private static final long serialVersionUID = 1L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_pathparam_web/PathParamTest");
     useDefaultValue = false;
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/pathparam/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_pathparam_web.war");
+    archive.addClasses(TSAppConfig.class, PathParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -55,6 +101,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked while using PathParam
    * with primitive type String.
    */
+  @Test
   public void test1() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -72,6 +119,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked while using PathParam
    * primitive type String and PathSegment.
    */
+  @Test
   public void test2() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, "a/b"));
     setProperty(Property.SEARCH_STRING, "double=ab");
@@ -87,6 +135,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked while using PathParam
    * primitive type int, float and PathSegment.
    */
+  @Test
   public void test3() throws Fault {
     setProperty(Property.REQUEST,
         buildRequest(Request.GET, "2147483647/b/12.345"));
@@ -108,6 +157,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked using PathParam
    * primitive type double, boolean, byte, and PathSegment.
    */
+  @Test
   public void test4() throws Fault {
     setProperty(Property.REQUEST,
         buildRequest(Request.GET, "123.1/true/127/tmp"));
@@ -129,6 +179,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked using PathParam
    * primitive type long, String, short, boolean and PathSegment.
    */
+  @Test
   public void test5() throws Fault {
     setProperty(Property.REQUEST,
         buildRequest(Request.GET, "-9223372036854775808/b/32767/true/abc"));
@@ -152,6 +203,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest; Verify that right Method is invoked using PathParam
    * primitive type List<String>.
    */
+  @Test
   public void test6() throws Fault {
     String[] headers = { "list=abcdef", "list=fedcba" };
 
@@ -180,6 +232,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * /PathParamTest with Matrix parameter; Verify that right Method is invoked
    * using PathParam PathSegment.
    */
+  @Test
   public void test7() throws Fault {
     String[] headers = { "matrix=/a;boolean1=false;boolean2=true",
         "matrix=/a;boolean2=true;boolean1=false" };
@@ -206,6 +259,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamEntityWithConstructorTest() throws Fault {
     super.paramEntityWithConstructorTest();
   }
@@ -217,6 +271,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamEntityWithValueOfTest() throws Fault {
     super.paramEntityWithValueOfTest();
   }
@@ -228,6 +283,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamEntityWithFromStringTest() throws Fault {
     searchEqualsEncoded = true;
     super.paramEntityWithFromStringTest();
@@ -240,6 +296,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SET);
   }
@@ -251,6 +308,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamSortedSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SORTED_SET);
   }
@@ -262,6 +320,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamListEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.LIST);
   }
@@ -339,6 +398,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named PathParam @Encoded is handled
    */
+  @Test
   public void pathParamEntityWithEncodedTest() throws Fault {
     searchEqualsEncoded = true;
     super.paramEntityWithEncodedTest();
@@ -353,6 +413,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * field or property values using 2 or 3 above is processed directly as
    * described in section 3.3.4.
    */
+  @Test
   public void pathParamThrowingWebApplicationExceptionTest() throws Fault {
     super.paramThrowingWebApplicationExceptionTest();
   }
@@ -371,6 +432,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * WebApplicationException that wraps the thrown exception with a not found
    * response (404 status) and no entity;
    */
+  @Test
   public void pathParamThrowingIllegalArgumentExceptionTest() throws Fault {
     setProperty(Property.UNORDERED_SEARCH_STRING, Status.NOT_FOUND.name());
     super.paramThrowingIllegalArgumentExceptionTest();

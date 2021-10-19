@@ -20,26 +20,62 @@ import jakarta.ws.rs.tck.common.JAXRSCommonClient;
 
 import jakarta.ws.rs.core.MediaType;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSClient extends JAXRSCommonClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JAXRSCommonClient {
   private static final long serialVersionUID = 1L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_get_web/GetTest");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/get/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_get_web.war");
+    archive.addClasses(TSAppConfig.class, HttpMethodGetTest.class, RecursiveLocator.class, SubResource.class);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
 
   /* Run test */
   /*
@@ -51,6 +87,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * @test_Strategy: Client invokes GET on root resource at /GetTest; Verify
    * that right Method is invoked.
    */
+  @Test
   public void getTest1() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -68,6 +105,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * @test_Strategy: Client invokes GET on root resource at /GetTest; Verify
    * that right Method is invoked.
    */
+  @Test
   public void getTest2() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -85,6 +123,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * @test_Strategy: Client invokes GET on a sub resource at /GetTest/sub;
    * Verify that right Method is invoked.
    */
+  @Test
   public void getSubTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -103,6 +142,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * request method designated for HEAD; Verify that corresponding GET Method is
    * invoked.
    */
+  @Test
   public void headTest1() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -121,6 +161,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * request method designated for HEAD; Verify that corresponding GET Method is
    * invoked.
    */
+  @Test
   public void headTest2() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -139,6 +180,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * no request method designated for HEAD; Verify that corresponding GET Method
    * is invoked instead.
    */
+  @Test
   public void headSubTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_PLAIN_TYPE));
@@ -157,6 +199,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * which no request method designated for OPTIONS. Verify that an automatic
    * response is generated.
    */
+  @Test
   public void optionSubTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         buildAccept(MediaType.TEXT_HTML_TYPE));
@@ -173,6 +216,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * @test_Strategy: The presence or absence of a request method designator
    * (e.g. @GET) differentiates between the two: o Absent
    */
+  @Test
   public void dynamicGetTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(GET, "123"));
     setProperty(Property.SEARCH_STRING, SubResource.ID);
@@ -192,6 +236,7 @@ public class JAXRSClient extends JAXRSCommonClient {
    * the request
    * 
    */
+  @Test
   public void recursiveResourceLocatorTest() throws Fault {
     StringBuilder sb = new StringBuilder();
     sb.append("recursive");

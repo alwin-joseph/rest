@@ -22,27 +22,73 @@ package jakarta.ws.rs.tck.ee.rs.headerparam;
 import jakarta.ws.rs.tck.ee.rs.JaxrsParamClient;
 
 import jakarta.ws.rs.core.Response.Status;
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
 
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSClient extends JaxrsParamClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JaxrsParamClient {
   private static final long serialVersionUID = 1L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_headerparam_web/HeaderParamTest");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/headerparam/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_headerparam_web.war");
+    archive.addClasses(TSAppConfig.class, HeaderParamTest.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+        jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+        jakarta.ws.rs.tck.ee.rs.JaxrsParamClient.CollectionName.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+        jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+        jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+        jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -54,6 +100,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on root resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamStringTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-STRINGTEST1: cts");
@@ -97,6 +144,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamNoQueryTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest(Request.GET, ""));
     setProperty(Property.SEARCH_STRING, "No HeaderParam");
@@ -111,6 +159,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamIntTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-INTTEST1: 2147483647");
@@ -155,6 +204,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamDoubleTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-DOUBLETEST1: 123");
@@ -199,6 +249,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamFloatTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-FLOATTEST1: 123");
@@ -241,6 +292,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a sub resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamLongTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-LONGTEST1: -9223372036854775808");
@@ -285,6 +337,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a sub resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamShortTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-SHORTTEST1: -32768");
@@ -327,6 +380,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a sub resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamByteTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-BYTETEST1: 127");
@@ -368,6 +422,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes Request.GET on a sub resource at
    * /HeaderParamTest; Verify that right Method is invoked.
    */
+  @Test
   public void headerParamBooleanTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS,
         "X-CTSTEST-HEADERTEST-BOOLEANTEST1: true");
@@ -410,6 +465,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithConstructorTest() throws Fault {
     super.paramEntityWithConstructorTest();
   }
@@ -422,6 +478,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithValueOfTest() throws Fault {
     super.paramEntityWithValueOfTest();
   }
@@ -434,6 +491,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithFromStringTest() throws Fault {
     super.paramEntityWithFromStringTest();
   }
@@ -446,6 +504,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SET);
   }
@@ -458,6 +517,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamSortedSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SORTED_SET);
   }
@@ -470,6 +530,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamListEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.LIST);
   }
@@ -481,6 +542,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamEntityWithConstructorTest() throws Fault {
     super.fieldEntityWithConstructorTest();
   }
@@ -492,6 +554,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamEntityWithValueOfTest() throws Fault {
     super.fieldEntityWithValueOfTest();
   }
@@ -503,6 +566,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamEntityWithFromStringTest() throws Fault {
     super.fieldEntityWithFromStringTest();
   }
@@ -514,6 +578,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamSetEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.SET);
   }
@@ -525,6 +590,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamSortedSetEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.SORTED_SET);
   }
@@ -536,6 +602,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerFieldParamListEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.LIST);
   }
@@ -549,6 +616,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see Section 3.2.
    */
+  @Test
   public void headerParamThrowingWebApplicationExceptionTest() throws Fault {
     super.paramThrowingWebApplicationExceptionTest();
   }
@@ -562,6 +630,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * field or property values using 2 or 3 above is processed directly as
    * described in section 3.3.4.
    */
+  @Test
   public void headerFieldThrowingWebApplicationExceptionTest() throws Fault {
     super.fieldThrowingWebApplicationExceptionTest();
   }
@@ -575,6 +644,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see section 3.2.
    */
+  @Test
   public void headerParamThrowingIllegalArgumentExceptionTest() throws Fault {
     setProperty(Property.UNORDERED_SEARCH_STRING, Status.BAD_REQUEST.name());
     super.paramThrowingIllegalArgumentExceptionTest();
@@ -593,6 +663,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * the thrown exception with a client error response (400 status) and no
    * entity.
    */
+  @Test
   public void headerFieldThrowingIllegalArgumentExceptionTest() throws Fault {
     setProperty(Property.UNORDERED_SEARCH_STRING, Status.BAD_REQUEST.name());
     super.fieldThrowingIllegalArgumentExceptionTest();

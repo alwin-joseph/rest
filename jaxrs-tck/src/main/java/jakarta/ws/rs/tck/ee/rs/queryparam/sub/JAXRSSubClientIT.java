@@ -19,28 +19,76 @@
  */
 package jakarta.ws.rs.tck.ee.rs.queryparam.sub;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
- *                     ts_home;
  */
-public class JAXRSSubClient
-    extends jakarta.ws.rs.tck.ee.rs.queryparam.JAXRSClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSSubClientIT
+    extends jakarta.ws.rs.tck.ee.rs.queryparam.JAXRSClientIT {
 
   private static final long serialVersionUID = 1L;
 
-  public JAXRSSubClient() {
+  public JAXRSSubClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_queryparam_sub_web/resource/subresource");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSSubClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false, name = "jaxrs_ee_rs_queryparam_sub_deployment")
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSSubClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/queryparam/sub/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_queryparam_sub_web.war");
+    archive.addClasses(TSAppConfig.class, SubResource.class,
+      jakarta.ws.rs.tck.ee.rs.queryparam.QueryParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.JaxrsParamClient.CollectionName.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -53,6 +101,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes HEAD on root resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamStringTest() throws Fault {
     super.queryParamStringTest();
   }
@@ -67,6 +116,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamNoQueryTest() throws Fault {
     super.queryParamNoQueryTest();
   }
@@ -81,6 +131,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamIntTest() throws Fault {
     super.queryParamIntTest();
   }
@@ -95,6 +146,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamDoubleTest() throws Fault {
     super.queryParamDoubleTest();
   }
@@ -109,6 +161,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamFloatTest() throws Fault {
     super.queryParamFloatTest();
   }
@@ -123,6 +176,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamLongTest() throws Fault {
     super.queryParamLongTest();
   }
@@ -137,6 +191,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamShortTest() throws Fault {
     super.queryParamShortTest();
   }
@@ -151,6 +206,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamByteTest() throws Fault {
     super.queryParamByteTest();
   }
@@ -165,6 +221,7 @@ public class JAXRSSubClient
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamBooleanTest() throws Fault {
     super.queryParamBooleanTest();
   }
@@ -177,6 +234,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithConstructorTest() throws Fault {
     super.queryParamEntityWithConstructorTest();
   }
@@ -189,6 +247,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithValueOfTest() throws Fault {
     super.queryParamEntityWithValueOfTest();
   }
@@ -201,6 +260,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithFromStringTest() throws Fault {
     super.queryParamEntityWithFromStringTest();
   }
@@ -213,6 +273,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamSetEntityWithFromStringTest() throws Fault {
     super.queryParamSetEntityWithFromStringTest();
   }
@@ -225,6 +286,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamSortedSetEntityWithFromStringTest() throws Fault {
     super.queryParamSortedSetEntityWithFromStringTest();
   }
@@ -237,6 +299,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamListEntityWithFromStringTest() throws Fault {
     super.queryParamListEntityWithFromStringTest();
   }
@@ -253,6 +316,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamEntityWithConstructorTest() throws Fault {
     super.queryFieldParamEntityWithConstructorTest();
   }
@@ -269,6 +333,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamEntityWithValueOfTest() throws Fault {
     super.queryFieldParamEntityWithValueOfTest();
   }
@@ -285,6 +350,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamEntityWithFromStringTest() throws Fault {
     super.queryFieldParamEntityWithFromStringTest();
   }
@@ -297,6 +363,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamSetEntityWithFromStringTest() throws Fault {
     super.queryFieldParamSetEntityWithFromStringTest();
   }
@@ -313,6 +380,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamSortedSetEntityWithFromStringTest() throws Fault {
     super.queryFieldParamSortedSetEntityWithFromStringTest();
   }
@@ -329,6 +397,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamListEntityWithFromStringTest() throws Fault {
     super.queryFieldParamListEntityWithFromStringTest();
   }
@@ -341,6 +410,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam @Encoded is handled
    */
+  @Test
   public void queryParamEntityWithEncodedTest() throws Fault {
     super.queryParamEntityWithEncodedTest();
   }
@@ -357,6 +427,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldParamEntityWithEncodedTest() throws Fault {
     super.queryFieldParamEntityWithEncodedTest();
   }
@@ -370,6 +441,7 @@ public class JAXRSSubClient
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see Section 3.2.
    */
+  @Test
   public void queryParamThrowingWebApplicationExceptionTest() throws Fault {
     super.queryParamThrowingWebApplicationExceptionTest();
   }
@@ -388,6 +460,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldThrowingWebApplicationExceptionTest() throws Fault {
     super.queryFieldThrowingWebApplicationExceptionTest();
   }
@@ -405,6 +478,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryParamThrowingIllegalArgumentExceptionTest() throws Fault {
     super.queryParamThrowingIllegalArgumentExceptionTest();
   }
@@ -428,6 +502,7 @@ public class JAXRSSubClient
    * property values of instances created by the implementation runtime. (Check
    * the resource with resource locator is injected field properties)
    */
+  @Test
   public void queryFieldThrowingIllegalArgumentExceptionTest() throws Fault {
     super.queryFieldThrowingIllegalArgumentExceptionTest();
   }

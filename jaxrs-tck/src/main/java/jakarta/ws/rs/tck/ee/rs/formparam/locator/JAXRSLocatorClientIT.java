@@ -16,30 +16,78 @@
 
 package jakarta.ws.rs.tck.ee.rs.formparam.locator;
 
-import jakarta.ws.rs.tck.ee.rs.formparam.JAXRSClient;
+import jakarta.ws.rs.tck.ee.rs.formparam.JAXRSClientIT;
+
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSLocatorClient extends JAXRSClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSLocatorClientIT extends JAXRSClientIT {
 
-  public JAXRSLocatorClient() {
+  public JAXRSLocatorClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_formparam_locator_web/resource/locator");
   }
 
   private static final long serialVersionUID = 1L;
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    JAXRSLocatorClient theTests = new JAXRSLocatorClient();
-    theTests.run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false, name = "jaxrs_ee_formparam_locator_deployment")
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSLocatorClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/formparam/locator/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_formparam_locator_web.war");
+    archive.addClasses(TSAppConfig.class, MiddleResource.class, LocatorResource.class,
+      jakarta.ws.rs.tck.ee.rs.formparam.FormParamTest.class,
+      jakarta.ws.rs.tck.common.AbstractMessageBodyRW.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /*
    * @testName: nonDefaultFormParamNothingSentTest
@@ -49,6 +97,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * 
    * @test_Strategy: Test sending no content;
    */
+  @Test
   public void nonDefaultFormParamNothingSentTest() throws Fault {
     super.nonDefaultFormParamNothingSentTest();
   }
@@ -62,6 +111,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithValueOf from sending a
    * String;
    */
+  @Test
   public void nonDefaultFormParamValueOfTest() throws Fault {
     super.nonDefaultFormParamValueOfTest();
   }
@@ -75,6 +125,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithFromString from sending a
    * String;
    */
+  @Test
   public void nonDefaultFormParamFromStringTest() throws Fault {
     _contextRoot += "encoded";
     super.nonDefaultFormParamFromStringTest();
@@ -89,6 +140,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithConstructor from sending a
    * String;
    */
+  @Test
   public void nonDefaultFormParamFromConstructorTest() throws Fault {
     super.nonDefaultFormParamFromConstructorTest();
   }
@@ -102,6 +154,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithConstructor from sending a
    * String;
    */
+  @Test
   public void nonDefaultFormParamFromListConstructorTest() throws Fault {
     super.nonDefaultFormParamFromListConstructorTest();
   }
@@ -115,6 +168,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithListConstructor from sending
    * a String;
    */
+  @Test
   public void nonDefaultFormParamFromSetFromStringTest() throws Fault {
     _contextRoot += "encoded";
     super.nonDefaultFormParamFromSetFromStringTest();
@@ -129,6 +183,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithListConstructor from sending
    * a String;
    */
+  @Test
   public void nonDefaultFormParamFromSortedSetFromStringTest() throws Fault {
     _contextRoot += "encoded";
     super.nonDefaultFormParamFromSortedSetFromStringTest();
@@ -143,6 +198,7 @@ public class JAXRSLocatorClient extends JAXRSClient {
    * @test_Strategy: Test creating a ParamEntityWithListConstructor from sending
    * a String;
    */
+  @Test
   public void nonDefaultFormParamFromListFromStringTest() throws Fault {
     _contextRoot += "encoded";
     super.nonDefaultFormParamFromListFromStringTest();
@@ -158,5 +214,46 @@ public class JAXRSLocatorClient extends JAXRSClient {
     _contextRoot += "encoded";
     super.paramEntityWithEncodedTest();
   }
+
+  public void defaultFormParamSentTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamNoArgSentTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamPutNoArgSentTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamPutArgSentTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamValueOfTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromConstructorTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromListConstructorTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromSetFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromSortedSetFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void defaultFormParamFromListFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void formParamThrowingWebApplicationExceptionTest() throws Fault {
+    //do nothing  
+  }
+  public void formParamThrowingIllegalArgumentExceptionTest() throws Fault {
+    //do nothing  
+  }
+
 
 }

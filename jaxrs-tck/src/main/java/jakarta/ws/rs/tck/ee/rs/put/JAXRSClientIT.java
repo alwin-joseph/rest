@@ -18,22 +18,59 @@ package jakarta.ws.rs.tck.ee.rs.put;
 
 import jakarta.ws.rs.tck.common.client.JaxrsCommonClient;
 
-public class JAXRSClient extends JaxrsCommonClient {
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JaxrsCommonClient {
 
   private static final long serialVersionUID = -71817508809693264L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_put_web");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/put/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_put_web.war");
+    archive.addClasses(TSAppConfig.class, HttpMethodPutTest.class);
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /*
    * @class.setup_props: webServerHost; webServerPort; ts_home;
@@ -48,6 +85,7 @@ public class JAXRSClient extends JaxrsCommonClient {
    * @test_Strategy: Client invokes PUT on root resource at /PutTest; Verify
    * that right Method is invoked.
    */
+  @Test
   public void putTest1() throws Fault {
     setProperty(Property.REQUEST_HEADERS, "Accept:text/plain");
     setProperty(Property.CONTENT, "dummy");
@@ -65,6 +103,7 @@ public class JAXRSClient extends JaxrsCommonClient {
    * @test_Strategy: Client invokes PUT on root resource at /PutTest; Verify
    * that right Method is invoked.
    */
+  @Test
   public void putTest2() throws Fault {
     setProperty(Property.CONTENT, "dummy");
     setProperty(Property.REQUEST_HEADERS, "Accept:text/html");
@@ -82,6 +121,7 @@ public class JAXRSClient extends JaxrsCommonClient {
    * @test_Strategy: Client invokes PUT on a sub resource at /PutTest/sub;
    * Verify that right Method is invoked.
    */
+  @Test
   public void putSubTest() throws Fault {
     setProperty(Property.CONTENT, "dummy");
     setProperty(Property.REQUEST, buildRequest(Request.PUT, "PutTest/sub"));

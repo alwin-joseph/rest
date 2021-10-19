@@ -16,28 +16,76 @@
 
 package jakarta.ws.rs.tck.ee.rs.pathparam.locator;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSLocatorClient
-    extends jakarta.ws.rs.tck.ee.rs.pathparam.JAXRSClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSLocatorClientIT
+    extends jakarta.ws.rs.tck.ee.rs.pathparam.JAXRSClientIT {
 
   private static final long serialVersionUID = 1L;
 
-  public JAXRSLocatorClient() {
+  public JAXRSLocatorClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_pathparam_locator_web/resource/locator");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSLocatorClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false, name = "jaxrs_ee_rs_pathparam_locator_deployment")
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSLocatorClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/pathparam/locator/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_pathparam_locator_web.war");
+    archive.addClasses(TSAppConfig.class, LocatorResource.class, MiddleResource.class, PathSegmentImpl.class,
+      jakarta.ws.rs.tck.ee.rs.pathparam.PathParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -50,6 +98,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked while using PathParam with primitive
    * type String.
    */
+  @Test
   public void test1() throws Fault {
     super.test1();
   }
@@ -64,6 +113,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked while using PathParam primitive type
    * String and PathSegment.
    */
+  @Test
   public void test2() throws Fault {
     super.test2();
   }
@@ -78,6 +128,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked while using PathParam primitive type
    * int, float and PathSegment.
    */
+  @Test
   public void test3() throws Fault {
     super.test3();
   }
@@ -92,6 +143,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked using PathParam primitive type double,
    * boolean, byte, and PathSegment.
    */
+  @Test
   public void test4() throws Fault {
     super.test4();
   }
@@ -106,6 +158,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked using PathParam primitive type long,
    * String, short, boolean and PathSegment.
    */
+  @Test
   public void test5() throws Fault {
     super.test5();
   }
@@ -120,6 +173,7 @@ public class JAXRSLocatorClient
    * Verify that right Method is invoked using PathParam primitive type
    * List<String>.
    */
+  @Test
   public void test6() throws Fault {
     super.test6();
   }
@@ -132,6 +186,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named Param is handled properly
    */
+  @Test
   public void pathParamEntityWithConstructorTest() throws Fault {
     super.paramEntityWithConstructorTest();
   }
@@ -144,6 +199,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named Param is handled properly
    */
+  @Test
   public void pathParamEntityWithValueOfTest() throws Fault {
     super.pathParamEntityWithValueOfTest();
   }
@@ -156,6 +212,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named Param is handled properly
    */
+  @Test
   public void pathParamEntityWithFromStringTest() throws Fault {
     _contextRoot += "encoded";
     super.pathParamEntityWithFromStringTest();
@@ -169,6 +226,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamSetEntityWithFromStringTest() throws Fault {
     super.pathParamSetEntityWithFromStringTest();
   }
@@ -181,6 +239,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named PathParam is handled properly
    */
+  @Test
   public void pathParamListEntityWithFromStringTest() throws Fault {
     super.pathParamListEntityWithFromStringTest();
   }
@@ -195,6 +254,7 @@ public class JAXRSLocatorClient
    * field or property values using 2 or 3 above is processed directly as
    * described in section 3.3.4.
    */
+  @Test
   public void pathParamThrowingWebApplicationExceptionTest() throws Fault {
     super.pathParamThrowingWebApplicationExceptionTest();
   }
@@ -214,9 +274,39 @@ public class JAXRSLocatorClient
    * WebApplicationException that wraps the thrown exception with a not found
    * response (404 status) and no entity;
    */
+  @Test
   public void pathParamThrowingIllegalArgumentExceptionTest() throws Fault {
     super.pathParamThrowingIllegalArgumentExceptionTest();
   }
+
+  public void test7() throws Fault {
+    //do nothing  
+  }
+  public void pathParamSortedSetEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamEntityWithConstructorTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamEntityWithValueOfTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamSetEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamSortedSetEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void pathFieldParamListEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void pathParamEntityWithEncodedTest() throws Fault {
+    //do nothing  
+  }
+  
 
   @Override
   protected String buildRequest(Request type, String... path) {

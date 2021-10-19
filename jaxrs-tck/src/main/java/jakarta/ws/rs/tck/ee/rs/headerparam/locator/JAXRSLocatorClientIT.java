@@ -16,27 +16,75 @@
 
 package jakarta.ws.rs.tck.ee.rs.headerparam.locator;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSLocatorClient
-    extends jakarta.ws.rs.tck.ee.rs.headerparam.JAXRSClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSLocatorClientIT
+    extends jakarta.ws.rs.tck.ee.rs.headerparam.JAXRSClientIT {
   private static final long serialVersionUID = 1L;
 
-  public JAXRSLocatorClient() {
+  public JAXRSLocatorClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_headerparam_locator_web/resource/locator");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSLocatorClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false, name = "jaxrs_ee_rs_headerparam_locator_deployment")
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSLocatorClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/headerparam/locator/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_headerparam_locator_web.war");
+    archive.addClasses(TSAppConfig.class, LocatorResource.class, MiddleResource.class,
+      jakarta.ws.rs.tck.ee.rs.headerparam.HeaderParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.JaxrsParamClient.CollectionName.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -48,6 +96,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes HEAD on root resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamStringTest() throws Fault {
     super.headerParamStringTest();
   }
@@ -61,6 +110,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamNoQueryTest() throws Fault {
     super.headerParamNoQueryTest();
   }
@@ -74,6 +124,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamIntTest() throws Fault {
     super.headerParamIntTest();
   }
@@ -87,6 +138,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamDoubleTest() throws Fault {
     super.headerParamDoubleTest();
   }
@@ -100,6 +152,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamFloatTest() throws Fault {
     super.headerParamFloatTest();
   }
@@ -113,6 +166,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a sub resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamLongTest() throws Fault {
     super.headerParamLongTest();
   }
@@ -126,6 +180,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a sub resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamShortTest() throws Fault {
     super.headerParamShortTest();
   }
@@ -139,6 +194,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a sub resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamByteTest() throws Fault {
     super.headerParamByteTest();
   }
@@ -152,6 +208,7 @@ public class JAXRSLocatorClient
    * @test_Strategy: Client invokes GET on a sub resource at /HeaderParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void headerParamBooleanTest() throws Fault {
     super.headerParamBooleanTest();
   }
@@ -164,6 +221,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithConstructorTest() throws Fault {
     super.headerParamEntityWithConstructorTest();
   }
@@ -176,6 +234,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithValueOfTest() throws Fault {
     super.headerParamEntityWithValueOfTest();
   }
@@ -188,6 +247,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamEntityWithFromStringTest() throws Fault {
     super.headerParamEntityWithFromStringTest();
   }
@@ -200,6 +260,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamSetEntityWithFromStringTest() throws Fault {
     super.headerParamSetEntityWithFromStringTest();
   }
@@ -212,6 +273,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamSortedSetEntityWithFromStringTest() throws Fault {
     super.headerParamSortedSetEntityWithFromStringTest();
   }
@@ -224,6 +286,7 @@ public class JAXRSLocatorClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void headerParamListEntityWithFromStringTest() throws Fault {
     super.headerParamListEntityWithFromStringTest();
   }
@@ -237,6 +300,7 @@ public class JAXRSLocatorClient
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see Section 3.2.
    */
+  @Test
   public void headerParamThrowingWebApplicationExceptionTest() throws Fault {
     super.headerParamThrowingWebApplicationExceptionTest();
   }
@@ -250,10 +314,36 @@ public class JAXRSLocatorClient
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see section 3.2.
    */
+  @Test
   public void headerParamThrowingIllegalArgumentExceptionTest() throws Fault {
     super.headerParamThrowingIllegalArgumentExceptionTest();
   }
 
+  public void headerFieldParamEntityWithConstructorTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldParamEntityWithValueOfTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldParamEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldParamSetEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldParamSortedSetEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldParamListEntityWithFromStringTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldThrowingWebApplicationExceptionTest() throws Fault {
+    //do nothing  
+  }
+  public void headerFieldThrowingIllegalArgumentExceptionTest() throws Fault {
+    //do nothing  
+  }
+  
   /**
    * change the GET request to POST request so that the new resources will
    * handle it

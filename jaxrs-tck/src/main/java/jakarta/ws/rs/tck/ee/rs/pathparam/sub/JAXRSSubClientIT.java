@@ -16,28 +16,76 @@
 
 package jakarta.ws.rs.tck.ee.rs.pathparam.sub;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSSubClient
-    extends jakarta.ws.rs.tck.ee.rs.pathparam.JAXRSClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSSubClientIT
+    extends jakarta.ws.rs.tck.ee.rs.pathparam.JAXRSClientIT {
 
   private static final long serialVersionUID = 1L;
 
-  public JAXRSSubClient() {
+  public JAXRSSubClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_pathparam_sub_web/resource/subresource");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSSubClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false, name = "jaxrs_ee_rs_pathparam_sub_deployment")
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSSubClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/pathparam/sub/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_pathparam_sub_web.war");
+    archive.addClasses(TSAppConfig.class, SubResource.class,
+      jakarta.ws.rs.tck.ee.rs.pathparam.PathParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -50,6 +98,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked while using PathParam with primitive
    * type String.
    */
+  @Test
   public void test1() throws Fault {
     super.test1();
   }
@@ -64,6 +113,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked while using PathParam primitive type
    * String and PathSegment.
    */
+  @Test
   public void test2() throws Fault {
     super.test2();
   }
@@ -78,6 +128,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked while using PathParam primitive type
    * int, float and PathSegment.
    */
+  @Test
   public void test3() throws Fault {
     super.test3();
   }
@@ -92,6 +143,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked using PathParam primitive type double,
    * boolean, byte, and PathSegment.
    */
+  @Test
   public void test4() throws Fault {
     super.test4();
   }
@@ -106,6 +158,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked using PathParam primitive type long,
    * String, short, boolean and PathSegment.
    */
+  @Test
   public void test5() throws Fault {
     super.test5();
   }
@@ -120,6 +173,7 @@ public class JAXRSSubClient
    * Verify that right Method is invoked using PathParam primitive type
    * List<String>.
    */
+  @Test
   public void test6() throws Fault {
     super.test6();
   }
@@ -134,6 +188,7 @@ public class JAXRSSubClient
    * Matrix parameter; Verify that right Method is invoked using PathParam
    * PathSegment.
    */
+  @Test
   public void test7() throws Fault {
     super.test7();
   }
@@ -146,6 +201,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamEntityWithConstructorTest() throws Fault {
     super.paramEntityWithConstructorTest();
   }
@@ -158,6 +214,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamEntityWithValueOfTest() throws Fault {
     super.pathParamEntityWithValueOfTest();
   }
@@ -170,6 +227,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamEntityWithFromStringTest() throws Fault {
     super.pathParamEntityWithFromStringTest();
   }
@@ -182,6 +240,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamSetEntityWithFromStringTest() throws Fault {
     super.pathParamSetEntityWithFromStringTest();
   }
@@ -194,6 +253,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamSortedSetEntityWithFromStringTest() throws Fault {
     super.pathParamSortedSetEntityWithFromStringTest();
   }
@@ -206,6 +266,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void pathParamListEntityWithFromStringTest() throws Fault {
     super.pathParamListEntityWithFromStringTest();
   }
@@ -314,6 +375,7 @@ public class JAXRSSubClient
    * 
    * @test_Strategy: Verify that named PathParam @Encoded is handled
    */
+  @Test
   public void pathParamEntityWithEncodedTest() throws Fault {
     super.pathParamEntityWithEncodedTest();
   }
@@ -328,6 +390,7 @@ public class JAXRSSubClient
    * field or property values using 2 or 3 above is processed directly as
    * described in section 3.3.4.
    */
+  @Test
   public void pathParamThrowingWebApplicationExceptionTest() throws Fault {
     super.pathParamThrowingWebApplicationExceptionTest();
   }
@@ -347,6 +410,7 @@ public class JAXRSSubClient
    * WebApplicationException that wraps the thrown exception with a not found
    * response (404 status) and no entity;
    */
+  @Test
   public void pathParamThrowingIllegalArgumentExceptionTest() throws Fault {
     super.pathParamThrowingIllegalArgumentExceptionTest();
   }

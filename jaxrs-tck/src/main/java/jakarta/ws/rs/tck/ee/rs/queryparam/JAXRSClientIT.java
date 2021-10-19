@@ -23,27 +23,75 @@ import jakarta.ws.rs.tck.ee.rs.JaxrsParamClient;
 
 import jakarta.ws.rs.core.Response.Status;
 
+import java.io.InputStream;
+import java.io.IOException;
+import jakarta.ws.rs.tck.lib.util.TestUtil;
+
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 /*
  * @class.setup_props: webServerHost;
  *                     webServerPort;
  *                     ts_home;
  */
-public class JAXRSClient extends JaxrsParamClient {
+@ExtendWith(ArquillianExtension.class)
+public class JAXRSClientIT extends JaxrsParamClient {
 
   private static final long serialVersionUID = 1L;
 
-  public JAXRSClient() {
+  public JAXRSClientIT() {
+    setup();
     setContextRoot("/jaxrs_ee_rs_queryparam_web/QueryParamTest");
   }
 
-  /**
-   * Entry point for different-VM execution. It should delegate to method
-   * run(String[], PrintWriter, PrintWriter), and this method should not contain
-   * any test configuration.
-   */
-  public static void main(String[] args) {
-    new JAXRSClient().run(args);
+  @BeforeEach
+  void logStartTest(TestInfo testInfo) {
+    TestUtil.logMsg("STARTING TEST : "+testInfo.getDisplayName());
   }
+
+  @AfterEach
+  void logFinishTest(TestInfo testInfo) {
+    TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
+  }
+
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException{
+
+    InputStream inStream = JAXRSClientIT.class.getClassLoader().getResourceAsStream("jakarta/ws/rs/tck/ee/rs/queryparam/web.xml.template");
+    String webXml = editWebXmlString(inStream);
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_ee_rs_queryparam_web.war");
+    archive.addClasses(TSAppConfig.class, QueryParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityPrototype.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithConstructor.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithValueOf.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityWithFromString.class,
+      jakarta.ws.rs.tck.ee.rs.ParamTest.class,
+      jakarta.ws.rs.tck.ee.rs.JaxrsParamClient.CollectionName.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingWebApplicationException.class,
+      jakarta.ws.rs.tck.ee.rs.ParamEntityThrowingExceptionGivenByName.class,
+      jakarta.ws.rs.tck.ee.rs.RuntimeExceptionMapper.class,
+      jakarta.ws.rs.tck.ee.rs.WebApplicationExceptionMapper.class
+    );
+    archive.setWebXML(new StringAsset(webXml));
+    return archive;
+
+  }
+
+
 
   /* Run test */
   /*
@@ -55,6 +103,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on root resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamStringTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("stringtest=cts"));
     setProperty(Property.SEARCH_STRING, "stringtest=cts");
@@ -87,6 +136,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamNoQueryTest() throws Fault {
     setProperty(Property.REQUEST_HEADERS, "Accept: text/plain");
     setProperty(Property.REQUEST, buildRequest(""));
@@ -103,6 +153,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamIntTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("inttest1=2147483647"));
     setProperty(Property.SEARCH_STRING, "inttest1=2147483647");
@@ -135,6 +186,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamDoubleTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("doubletest1=123"));
     setProperty(Property.SEARCH_STRING, "doubletest1=123.0");
@@ -167,6 +219,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes HEAD on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamFloatTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("floattest1=123"));
     setProperty(Property.SEARCH_STRING, "floattest1=123.0");
@@ -197,6 +250,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamLongTest() throws Fault {
     setProperty(Property.REQUEST,
         buildRequest("longtest=-9223372036854775808"));
@@ -230,6 +284,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamShortTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("shorttest=-32768"));
     setProperty(Property.SEARCH_STRING, "shorttest=-32768");
@@ -260,6 +315,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamByteTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("bytetest=127"));
     setProperty(Property.SEARCH_STRING, "bytetest=127");
@@ -289,6 +345,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * @test_Strategy: Client invokes GET on a sub resource at /QueryParamTest;
    * Verify that right Method is invoked.
    */
+  @Test
   public void queryParamBooleanTest() throws Fault {
     setProperty(Property.REQUEST, buildRequest("booleantest=true"));
     setProperty(Property.SEARCH_STRING, "booleantest=true");
@@ -318,6 +375,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithConstructorTest() throws Fault {
     super.paramEntityWithConstructorTest();
   }
@@ -330,6 +388,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithValueOfTest() throws Fault {
     super.paramEntityWithValueOfTest();
   }
@@ -342,6 +401,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamEntityWithFromStringTest() throws Fault {
     super.paramEntityWithFromStringTest();
   }
@@ -354,6 +414,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SET);
   }
@@ -366,6 +427,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamSortedSetEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.SORTED_SET);
   }
@@ -378,6 +440,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryParamListEntityWithFromStringTest() throws Fault {
     super.paramCollectionEntityWithFromStringTest(CollectionName.LIST);
   }
@@ -389,6 +452,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamEntityWithConstructorTest() throws Fault {
     super.fieldEntityWithConstructorTest();
   }
@@ -400,6 +464,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamEntityWithValueOfTest() throws Fault {
     super.fieldEntityWithValueOfTest();
   }
@@ -411,6 +476,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamEntityWithFromStringTest() throws Fault {
     super.fieldEntityWithFromStringTest();
   }
@@ -422,6 +488,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamSetEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.SET);
   }
@@ -433,6 +500,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamSortedSetEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.SORTED_SET);
   }
@@ -444,6 +512,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam is handled properly
    */
+  @Test
   public void queryFieldParamListEntityWithFromStringTest() throws Fault {
     super.fieldCollectionEntityWithFromStringTest(CollectionName.LIST);
   }
@@ -456,6 +525,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam @Encoded is handled
    */
+  @Test
   public void queryParamEntityWithEncodedTest() throws Fault {
     super.paramEntityWithEncodedTest();
   }
@@ -467,6 +537,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * 
    * @test_Strategy: Verify that named QueryParam @Encoded is handled
    */
+  @Test
   public void queryFieldParamEntityWithEncodedTest() throws Fault {
     super.fieldEntityWithEncodedTest();
   }
@@ -480,6 +551,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see Section 3.2.
    */
+  @Test
   public void queryParamThrowingWebApplicationExceptionTest() throws Fault {
     super.paramThrowingWebApplicationExceptionTest();
   }
@@ -493,6 +565,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * field or property values using 2 or 3 above is processed directly as
    * described in section 3.3.4.
    */
+  @Test
   public void queryFieldThrowingWebApplicationExceptionTest() throws Fault {
     super.fieldThrowingWebApplicationExceptionTest();
   }
@@ -506,6 +579,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * are treated the same as exceptions thrown during construction of field or
    * bean property values, see section 3.2.
    */
+  @Test
   public void queryParamThrowingIllegalArgumentExceptionTest() throws Fault {
     setProperty(Property.UNORDERED_SEARCH_STRING, Status.NOT_FOUND.name());
     super.paramThrowingIllegalArgumentExceptionTest();
@@ -525,6 +599,7 @@ public class JAXRSClient extends JaxrsParamClient {
    * WebApplicationException that wraps the thrown exception with a not found
    * response (404 status) and no entity;
    */
+  @Test
   public void queryFieldThrowingIllegalArgumentExceptionTest() throws Fault {
     setProperty(Property.UNORDERED_SEARCH_STRING, Status.NOT_FOUND.name());
     super.fieldThrowingIllegalArgumentExceptionTest();
