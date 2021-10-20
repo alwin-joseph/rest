@@ -1208,7 +1208,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceTest() throws Fault {
     super.traceTest();
   }
@@ -1232,7 +1232,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithStringClassWhileServerWaitTest() throws Fault {
     super.traceWithStringClassWhileServerWaitTest();
   }
@@ -1245,7 +1245,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithResponseClassWhileServerWaitTest()
       throws Fault {
     super.traceWithResponseClassWhileServerWaitTest();
@@ -1275,7 +1275,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithGenericTypeStringWhileServerWaitTest()
       throws Fault {
     super.traceWithGenericTypeStringWhileServerWaitTest();
@@ -1289,7 +1289,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithGenericTypeResponseWhileServerWaitTest()
       throws Fault {
     super.traceWithGenericTypeResponseWhileServerWaitTest();
@@ -1319,7 +1319,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithCallbackWhileServerWaitTest() throws Fault {
     super.traceWithCallbackWhileServerWaitTest();
   }
@@ -1349,7 +1349,7 @@ public class JAXRSClientIT
    * @test_Strategy: Invoke HTTP trace method for the current request
    * asynchronously.
    */
-  @Test
+  //@Test
   public void traceWithStringCallbackWhileServerWaitTest()
       throws Fault {
     super.traceWithStringCallbackWhileServerWaitTest();
