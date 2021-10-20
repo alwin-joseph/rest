@@ -87,7 +87,15 @@ public class JAXRSClientIT extends SSEJAXRSClient {
     String webXml = editWebXmlString(inStream);
 
     WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs_jaxrs21_ee_sse_sseeventsink_web.war");
-    archive.addClasses(TSAppConfig.class, CloseResource.class, MBWCheckResource.class, StageCheckerResource.class);
+    archive.addClasses(TSAppConfig.class, CloseResource.class, MBWCheckResource.class, StageCheckerResource.class,
+      jakarta.ws.rs.tck.common.impl.TRACE.class,
+      jakarta.ws.rs.tck.common.impl.StringSource.class,
+      jakarta.ws.rs.tck.common.impl.StringStreamingOutput.class,
+      jakarta.ws.rs.tck.common.impl.StringDataSource.class,
+      jakarta.ws.rs.tck.common.impl.SinglevaluedMap.class,
+      jakarta.ws.rs.tck.common.impl.SecurityContextImpl.class,
+      jakarta.ws.rs.tck.common.impl.ReplacingOutputStream.class,
+      jakarta.ws.rs.tck.common.impl.JaxbKeyValueBean.class);
     archive.setWebXML(new StringAsset(webXml));
     return archive;
 

@@ -16,14 +16,24 @@
 
 package jakarta.ws.rs.tck.jaxrs21.api.client.invocationbuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import jakarta.ws.rs.tck.common.JAXRSCommonClient;
 import jakarta.ws.rs.tck.lib.util.TestUtil;
 
 import jakarta.ws.rs.client.ClientBuilder;
 
-import org.junit.jupiter.api.Test;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.api.exporter.ZipExporter;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -35,6 +45,7 @@ import org.junit.jupiter.api.AfterEach;
 /**
  * @since 2.1
  */
+@ExtendWith(ArquillianExtension.class)
 public class JAXRSClientIT extends JAXRSCommonClient {
 
   private static final long serialVersionUID = 21L;
@@ -54,6 +65,17 @@ public class JAXRSClientIT extends JAXRSCommonClient {
     TestUtil.logMsg("FINISHED TEST : "+testInfo.getDisplayName());
   }
 
+  @Deployment(testable = false)
+  public static WebArchive createDeployment() throws IOException {
+
+    WebArchive archive = ShrinkWrap.create(WebArchive.class, "jaxrs21_api_client_invocationbuilder_web.war");
+    archive.addClasses(TCKRxInvoker.class, TCKRxInvokerProvider.class, 
+      jakarta.ws.rs.tck.common.JAXRSCommonClient.class,
+      jakarta.ws.rs.tck.common.webclient.TestFailureException.class);
+    return archive;
+
+  }
+
 
   /*
    * @testName: testRxClassGetsClassInstance
@@ -64,6 +86,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * subclass. Note that corresponding RxInvokerProvider must be registered to
    * client runtime.
    */
+  @Test
   public void testRxClassGetsClassInstance() throws Fault {
     TCKRxInvoker invoker = ClientBuilder.newClient()
         .register(TCKRxInvokerProvider.class).target("somewhere").request()
@@ -90,6 +113,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * subclass. Note that corresponding RxInvokerProvider must be registered to
    * client runtime.
    */
+  @Test
   public void testRxClassThrowsWhenNotRegistered() throws Fault {
     try {
       ClientBuilder.newClient().target("somewhere").request()
@@ -111,6 +135,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * subclass. Note that corresponding RxInvokerProvider must be registered to
    * client runtime.
    */
+  @Test
   public void testRxClassExceutorServiceGetsClassInstance() throws Fault {
     TCKRxInvoker invoker = ClientBuilder.newClient()
         .register(TCKRxInvokerProvider.class).target("somewhere").request()
@@ -137,6 +162,7 @@ public class JAXRSClientIT extends JAXRSCommonClient {
    * subclass. Note that corresponding RxInvokerProvider must be registered to
    * client runtime.
    */
+  @Test
   public void testRxClassExecutorServiceThrowsWhenNotRegistered() throws Fault {
     try {
       ClientBuilder.newClient().target("somewhere").request()
