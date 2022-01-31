@@ -74,6 +74,7 @@ public final class SeBootstrapIT {
                 requestedConfiguration);
         final SeBootstrap.Instance instance = completionStage.toCompletableFuture().get();
         final SeBootstrap.Configuration actualConfiguration = instance.configuration();
+        System.out.println("actualConfiguration port is :"+actualConfiguration.port());
         final int actualResponse = client.target(UriBuilder.newInstance().scheme(actualConfiguration.protocol())
                 .host(actualConfiguration.host()).port(actualConfiguration.port()).path(actualConfiguration.rootPath())
                 .path("application/resource")).request().get(int.class);
@@ -307,6 +308,7 @@ public final class SeBootstrapIT {
         final int expectedResponse = mockInt();
         final Application application = new StaticApplication(expectedResponse);
         final SeBootstrap.Configuration.Builder bootstrapConfigurationBuilder = SeBootstrap.Configuration.builder();
+        System.out.println("SeBootstrap.Configuration.DEFAULT_PORT port is :"+SeBootstrap.Configuration.DEFAULT_PORT);
         final SeBootstrap.Configuration requestedConfiguration = bootstrapConfigurationBuilder.protocol("HTTP")
                 .host("localhost").port(SeBootstrap.Configuration.DEFAULT_PORT).rootPath("/root/path").build();
 
