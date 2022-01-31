@@ -42,6 +42,7 @@ public abstract class JaxrsUtil {
         port = serverSocket.getLocalPort();
       }
     }
+    System.out.println("The port used is: "+port);
     return port;
   }
 
