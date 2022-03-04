@@ -176,13 +176,6 @@
 
     </dependencies>
 
-
-    <profiles>
-        <profile>
-            <id>arq-glassfish-managed</id>
-        </profile>
-    </profiles>
-
     <build>	    
     <plugins>
             <plugin>
