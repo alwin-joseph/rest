@@ -22,7 +22,7 @@
 
     <groupId>org.glassfish.jersey.core</groupId>
     <artifactId>jersey-tck</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>${tck.artifactId}</artifactId>
-            <version>${project.version}</version>
+            <version>3.1.1</version>
             <scope>test</scope>
         </dependency>
 
