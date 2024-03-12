@@ -136,7 +136,7 @@ public class MultipartSupportIT {
                             .request(MediaType.MULTIPART_FORM_DATA_TYPE)
                             .post(Entity.entity(new GenericEntity<>(multipart) {
                             }, MediaType.MULTIPART_FORM_DATA))) {
-                Assertions.assertEquals(Response.Status.OK, response.getStatusInfo());
+                Assertions.assertEquals(200, response.getStatus());
                 final List<EntityPart> entityParts = response.readEntity(new GenericType<>() {
                 });
                 if (entityParts.size() != 3) {
@@ -153,6 +153,7 @@ public class MultipartSupportIT {
 
                 part = find(entityParts, "received-file");
                 Assertions.assertNotNull(part, getMessage(entityParts));
+                Assertions.assertEquals("test file", part.getFileName().get());
                 Assertions.assertTrue(part.getContent(String.class).contains("value6"));
 
                 part = find(entityParts, "added-input-stream");
@@ -187,11 +188,11 @@ public class MultipartSupportIT {
                             .mediaType(MediaType.TEXT_PLAIN_TYPE)
                             .build());
             try (
-                    Response response = client.target(createCombinedUri(uri, "test//single-form-param"))
+                    Response response = client.target(createCombinedUri(uri, "test/single-form-param"))
                             .request(MediaType.MULTIPART_FORM_DATA_TYPE)
                             .post(Entity.entity(new GenericEntity<>(multipart) {
                             }, MediaType.MULTIPART_FORM_DATA))) {
-                Assertions.assertEquals(Response.Status.OK, response.getStatusInfo());
+                Assertions.assertEquals(200, response.getStatus());
                 final List<EntityPart> entityParts = response.readEntity(new GenericType<>() {
                 });
                 if (entityParts.size() != 3) {
@@ -240,7 +241,7 @@ public class MultipartSupportIT {
                             .request(MediaType.MULTIPART_FORM_DATA_TYPE)
                             .post(Entity.entity(new GenericEntity<>(multipart) {
                             }, MediaType.MULTIPART_FORM_DATA))) {
-                Assertions.assertEquals(Response.Status.OK, response.getStatusInfo());
+                Assertions.assertEquals(200, response.getStatus());
                 final List<EntityPart> entityParts = response.readEntity(new GenericType<>() {
                 });
                 if (entityParts.size() != 3) {
@@ -360,7 +361,7 @@ public class MultipartSupportIT {
                             .mediaType(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                             .build(),
                     EntityPart.withName("received-file")
-                            .content(find(parts,"file"))
+                            .content(find(parts,"file").getFileName().get(),find(parts,"file").getContent())
                             .mediaType(MediaType.APPLICATION_XML)
                             .build(),
                     EntityPart.withName("added-input-stream")
