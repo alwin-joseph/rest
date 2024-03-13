@@ -54,7 +54,7 @@ public class MediaTypeResource {
     try (SseEventSink s = sink) {
       s.send(sse.newEventBuilder().data(SSEMessage.MESSAGE).mediaType(mediaType)
           .build());
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }
@@ -67,7 +67,7 @@ public class MediaTypeResource {
       JAXBElement<String> element = new JAXBElement<String>(new QName("name"),
           String.class, SSEMessage.MESSAGE);
       s.send(sse.newEventBuilder().data(element).mediaType(mediaType).build());
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }
@@ -80,7 +80,7 @@ public class MediaTypeResource {
       JaxbKeyValueBean bean = new JaxbKeyValueBean();
       bean.set("key", SSEMessage.MESSAGE);
       s.send(sse.newEventBuilder().data(bean).mediaType(mediaType).build());
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }
@@ -93,7 +93,7 @@ public class MediaTypeResource {
       SinglevaluedMap<String, String> map = new SinglevaluedMap<>();
       map.add("key", SSEMessage.MESSAGE);
       s.send(sse.newEventBuilder().data(map).mediaType(mediaType).build());
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }

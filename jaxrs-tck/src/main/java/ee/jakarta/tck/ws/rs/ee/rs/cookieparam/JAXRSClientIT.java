@@ -403,7 +403,7 @@ public class JAXRSClientIT extends JaxrsParamClient {
           found = true;
     }
     assertTrue(found, "Could not find cookie"+ cookie+ "in response headers:"+
-        JaxrsUtil.iterableToString(";", headers));
+        JaxrsUtil.iterableToString(";", (Object[]) headers));
     logMsg("Found cookie", cookie, "as expected");
   }
 

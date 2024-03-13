@@ -46,7 +46,7 @@ public class CloseResource {
     isClosed = false;
     try (SseEventSink s = sink) {
       s.send(sse.newEvent("RESET"));
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -69,7 +69,7 @@ public class CloseResource {
           if (!isClosed)
             return;
           s.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
           //ignore this exception and isClosed will be checked later.
         }
         isClosed = s.isClosed();
@@ -99,7 +99,7 @@ public class CloseResource {
         return;
       }
       s.send(sse.newEvent("CHECK"));
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }

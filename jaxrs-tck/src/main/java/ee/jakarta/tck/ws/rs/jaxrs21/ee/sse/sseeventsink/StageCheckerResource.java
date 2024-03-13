@@ -49,7 +49,7 @@ public class StageCheckerResource {
         }
       }
       s.send(sse.newEvent(DONE));
-    } catch (IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }

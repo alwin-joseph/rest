@@ -110,7 +110,7 @@ public class ServiceUnavailableResource {
       } else {
         try (SseEventSink s = sink) {
           s.send(sse.newEvent(MESSAGE));
-        } catch (IOException e) {
+        } catch (Exception e) {
           LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
         }
       }
@@ -127,7 +127,7 @@ public class ServiceUnavailableResource {
         isConnectionLost--;
         try {
           sink.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
         /*
@@ -138,7 +138,7 @@ public class ServiceUnavailableResource {
       } else {
         try (SseEventSink s = sink) {
           s.send(sse.newEvent(MESSAGE));
-        } catch (IOException e) {
+        } catch (Exception e) {
           LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
         }
       }
@@ -151,7 +151,7 @@ public class ServiceUnavailableResource {
   public void sendRetry(@Context SseEventSink sink, @Context Sse sse) {
     try (SseEventSink s = sink) {
       s.send(sse.newEventBuilder().data(MESSAGE).reconnectDelay(3000L).build());
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }
@@ -163,7 +163,7 @@ public class ServiceUnavailableResource {
     try (SseEventSink s = sink) {
       s.send(
           (OutboundSseEvent) new OutboundSSEEventImpl(MESSAGE).setDelay(20000));
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOG.log(Level.WARNING, "Failed to close SseEventSink", e);
     }
   }
